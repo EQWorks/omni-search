@@ -1,0 +1,39 @@
+.search :global(.input) {
+    width: 30rem !important;
+    border-radius: 0.285714rem !important;
+  }
+  
+  .search :global(input) {
+    border-radius: 0.285714rem !important;
+  }
+  
+  .search :global(.results) {
+    overflow-y: auto;
+    max-height: 90vh;
+    margin-top: 0.25rem !important;
+    width: 30rem !important;
+    z-index: 1001 !important;
+  }
+  
+  .search :global(.name) {
+    width: 115px !important;
+    padding-top: 0.5rem !important;
+    padding-bottom: 0.5rem !important;
+  }
+  
+  .search :global(.result) {
+    padding-top: 0.5rem !important;
+    padding-bottom: 0.5rem !important;
+  }
+  
+  .resultID {
+    width: 3.8rem;
+    display: table-cell;
+    /* color: #4183C4 !important; */
+  }
+  
+  .resultName {
+    padding-left: 0.5rem;
+    display: table-cell;
+  }
+  

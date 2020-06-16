@@ -11,7 +11,7 @@
   ],
   "scripts": {
     "test": "yarn jest --testPathPattern=__tests__/",
-    "lint": "eslint src stories __tests__",
+    "lint": "eslint .",
     "lint:watch:fix": "esw --fix --watch src stories __tests__",
     "build": "babel src --out-dir dist --copy-files",
     "storybook": "env $(print-env) start-storybook -p 6006",
@@ -56,10 +56,13 @@
     "jest": "^26.0.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.0",
+    "react-router-dom": "^5.2.0",
     "react-test-renderer": "^16.13.1"
   },
   "dependencies": {
+    "algoliasearch": "^4.3.0",
     "classnames": "^2.2.6",
+    "semantic-ui-react": "^0.88.2",
     "use-debounce": "^3.4.2"
   },
   "peerDependencies": {
