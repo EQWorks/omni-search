@@ -14,6 +14,7 @@
     "lint": "eslint .",
     "lint:watch:fix": "esw --fix --watch .",
     "build": "babel src --out-dir dist --copy-files",
+    "prepublishOnly": "yarn eslint src/ && yarn build",
     "storybook": "env $(print-env) start-storybook -p 6006",
     "build-storybook": "build-storybook"
   },
