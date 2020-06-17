@@ -1,6 +1,6 @@
 {
   "name": "@eqworks/omni-search",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "EQWorks workflow omni search component and hook",
   "main": "dist/index.js",
   "source": "src/index.js",
@@ -11,8 +11,8 @@
   ],
   "scripts": {
     "test": "yarn jest --testPathPattern=__tests__/",
-    "lint": "eslint .",
-    "lint:watch:fix": "esw --fix --watch .",
+    "lint": "eslint src/",
+    "lint:watch:fix": "esw --fix --watch src/",
     "build": "babel src --out-dir dist --copy-files",
     "prepublishOnly": "yarn eslint src/ && yarn build",
     "storybook": "env $(print-env) start-storybook -p 6006",
