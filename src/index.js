@@ -1,0 +1,1 @@
+export { default as useAlgolia } from './algolia-hook'
