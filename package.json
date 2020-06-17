@@ -1,6 +1,6 @@
 {
   "name": "@eqworks/omni-search",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "EQWorks workflow omni search component and hook",
   "main": "dist/index.js",
   "source": "src/index.js",
@@ -59,12 +59,14 @@
     "react-test-renderer": "^16.13.1"
   },
   "dependencies": {
+    "algoliasearch": "^4.1.0",
     "classnames": "^2.2.6",
     "use-debounce": "^3.4.2"
   },
   "peerDependencies": {
     "@material-ui/core": "^4.9.11",
     "react": "^16.13.1",
-    "react-dom": "^16.13.1"
+    "react-dom": "^16.13.1",
+    "algoliasearch": "^4.1.0"
   }
 }
