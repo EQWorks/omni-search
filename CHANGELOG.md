@@ -8,6 +8,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - nill
 
 
+## [0.1.3] - 2020-06-17
+### Changed
+- patch on json version
+
+## [0.1.2] - 2020-06-17
+### Changed
+- patch on json scripts
+
 ## [0.1.1] - 2020-06-17
 ### Changed
 - patch on json to add algoliasearch as a peer dependency

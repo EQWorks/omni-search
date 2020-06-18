@@ -7,6 +7,7 @@ Requires peer dependencies:
 
 - `react` - `^16`
 - `react-dom` - `^16`
+- `algoliasearch` - `^4.1.0`
 
 ```js
 import {
