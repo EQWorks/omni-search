@@ -11,6 +11,14 @@ const reducer = (state, { type, payload }) => {
 }
 
 /**
+ * @typedef {Object} Hook
+ * @property {object} algoliaIndex - the algolia index if user wants a method other than search
+ * @property {function} search - the search function per keystroke
+ * @property {function} debouncedSearch - the debounced search function
+ * @property {array} results - the results of the search
+ */
+
+/**
  * Algolia custom hook. Should be called after server API call that retrieves the search key
  * @function useAlgolia
  * @param {string} [indexName='mix_index'] algolia index name to be used on the search
@@ -18,10 +26,7 @@ const reducer = (state, { type, payload }) => {
  * to this client specificaly, to allow searching under the given index
  * @param {object} specs the custom algolia specs. Default is {} limit 20 results/search
  * @param {string} algoliaIDkey algolia user identification key
- * @returns {object} the algolia index if user wants a method other than search
- * the search function per keystroke
- * the debounced search function
- * the results of the search
+ * @returns {Hook} 
  */
 
 const useAlgolia = ({ indexName = 'mix_index', searchAPIkey, specs, algoliaIDkey }) => {
