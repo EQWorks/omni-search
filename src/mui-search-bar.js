@@ -1,140 +1,443 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import { useHistory } from 'react-router-dom'
+
 import TextField from '@material-ui/core/TextField'
 import Autocomplete from '@material-ui/lab/Autocomplete'
+import SearchIcon from '@material-ui/icons/Search'
+import Paper from '@material-ui/core/Paper'
+import CircularProgress from '@material-ui/core/CircularProgress'
+import Divider from '@material-ui/core/Divider'
 
+import useAlgolia from './algolia-hook'
+import { searchIndexLevelMap, searchIndexLevelToRouteMap } from './constants/campaing-level'
 
-// Top 100 films as rated by IMDb users. http://www.imdb.com/chart/top
-const top100Films = [
-  { title: 'The Shawshank Redemption', year: 1994 },
-  { title: 'The Godfather', year: 1972 },
-  { title: 'The Godfather: Part II', year: 1974 },
-  { title: 'The Dark Knight', year: 2008 },
-  { title: '12 Angry Men', year: 1957 },
-  { title: "Schindler's List", year: 1993 },
-  { title: 'Pulp Fiction', year: 1994 },
-  { title: 'The Lord of the Rings: The Return of the King', year: 2003 },
-  { title: 'The Good, the Bad and the Ugly', year: 1966 },
-  { title: 'Fight Club', year: 1999 },
-  { title: 'The Lord of the Rings: The Fellowship of the Ring', year: 2001 },
-  { title: 'Star Wars: Episode V - The Empire Strikes Back', year: 1980 },
-  { title: 'Forrest Gump', year: 1994 },
-  { title: 'Inception', year: 2010 },
-  { title: 'The Lord of the Rings: The Two Towers', year: 2002 },
-  { title: "One Flew Over the Cuckoo's Nest", year: 1975 },
-  { title: 'Goodfellas', year: 1990 },
-  { title: 'The Matrix', year: 1999 },
-  { title: 'Seven Samurai', year: 1954 },
-  { title: 'Star Wars: Episode IV - A New Hope', year: 1977 },
-  { title: 'City of God', year: 2002 },
-  { title: 'Se7en', year: 1995 },
-  { title: 'The Silence of the Lambs', year: 1991 },
-  { title: "It's a Wonderful Life", year: 1946 },
-  { title: 'Life Is Beautiful', year: 1997 },
-  { title: 'The Usual Suspects', year: 1995 },
-  { title: 'Léon: The Professional', year: 1994 },
-  { title: 'Spirited Away', year: 2001 },
-  { title: 'Saving Private Ryan', year: 1998 },
-  { title: 'Once Upon a Time in the West', year: 1968 },
-  { title: 'American History X', year: 1998 },
-  { title: 'Interstellar', year: 2014 },
-  { title: 'Casablanca', year: 1942 },
-  { title: 'City Lights', year: 1931 },
-  { title: 'Psycho', year: 1960 },
-  { title: 'The Green Mile', year: 1999 },
-  { title: 'The Intouchables', year: 2011 },
-  { title: 'Modern Times', year: 1936 },
-  { title: 'Raiders of the Lost Ark', year: 1981 },
-  { title: 'Rear Window', year: 1954 },
-  { title: 'The Pianist', year: 2002 },
-  { title: 'The Departed', year: 2006 },
-  { title: 'Terminator 2: Judgment Day', year: 1991 },
-  { title: 'Back to the Future', year: 1985 },
-  { title: 'Whiplash', year: 2014 },
-  { title: 'Gladiator', year: 2000 },
-  { title: 'Memento', year: 2000 },
-  { title: 'The Prestige', year: 2006 },
-  { title: 'The Lion King', year: 1994 },
-  { title: 'Apocalypse Now', year: 1979 },
-  { title: 'Alien', year: 1979 },
-  { title: 'Sunset Boulevard', year: 1950 },
-  { title: 'Dr. Strangelove or: How I Learned to Stop Worrying and Love the Bomb', year: 1964 },
-  { title: 'The Great Dictator', year: 1940 },
-  { title: 'Cinema Paradiso', year: 1988 },
-  { title: 'The Lives of Others', year: 2006 },
-  { title: 'Grave of the Fireflies', year: 1988 },
-  { title: 'Paths of Glory', year: 1957 },
-  { title: 'Django Unchained', year: 2012 },
-  { title: 'The Shining', year: 1980 },
-  { title: 'WALL·E', year: 2008 },
-  { title: 'American Beauty', year: 1999 },
-  { title: 'The Dark Knight Rises', year: 2012 },
-  { title: 'Princess Mononoke', year: 1997 },
-  { title: 'Aliens', year: 1986 },
-  { title: 'Oldboy', year: 2003 },
-  { title: 'Once Upon a Time in America', year: 1984 },
-  { title: 'Witness for the Prosecution', year: 1957 },
-  { title: 'Das Boot', year: 1981 },
-  { title: 'Citizen Kane', year: 1941 },
-  { title: 'North by Northwest', year: 1959 },
-  { title: 'Vertigo', year: 1958 },
-  { title: 'Star Wars: Episode VI - Return of the Jedi', year: 1983 },
-  { title: 'Reservoir Dogs', year: 1992 },
-  { title: 'Braveheart', year: 1995 },
-  { title: 'M', year: 1931 },
-  { title: 'Requiem for a Dream', year: 2000 },
-  { title: 'Amélie', year: 2001 },
-  { title: 'A Clockwork Orange', year: 1971 },
-  { title: 'Like Stars on Earth', year: 2007 },
-  { title: 'Taxi Driver', year: 1976 },
-  { title: 'Lawrence of Arabia', year: 1962 },
-  { title: 'Double Indemnity', year: 1944 },
-  { title: 'Eternal Sunshine of the Spotless Mind', year: 2004 },
-  { title: 'Amadeus', year: 1984 },
-  { title: 'To Kill a Mockingbird', year: 1962 },
-  { title: 'Toy Story 3', year: 2010 },
-  { title: 'Logan', year: 2017 },
-  { title: 'Full Metal Jacket', year: 1987 },
-  { title: 'Dangal', year: 2016 },
-  { title: 'The Sting', year: 1973 },
-  { title: '2001: A Space Odyssey', year: 1968 },
-  { title: "Singin' in the Rain", year: 1952 },
-  { title: 'Toy Story', year: 1995 },
-  { title: 'Bicycle Thieves', year: 1948 },
-  { title: 'The Kid', year: 1921 },
-  { title: 'Inglourious Basterds', year: 2009 },
-  { title: 'Snatch', year: 2000 },
-  { title: '3 Idiots', year: 2009 },
-  { title: 'Monty Python and the Holy Grail', year: 1975 },
+const res = [
+  {
+    "category": "Campaigns",
+    "name": "Bell Walkthrough Test",
+    "id": 68916,
+    "level": "offer"
+  },
+  {
+    "category": "Campaigns",
+    "name": "Bell's Corner",
+    "id": 63443,
+    "level": "offer"
+  },
+  {
+    "category": "Campaigns",
+    "name": "Bell - Wholesale",
+    "id": 57581,
+    "level": "offer"
+  },
+  {
+    "category": "Campaigns",
+    "name": "Bell Virgin Internet Campaign TEST",
+    "id": 48375,
+    "level": "offer"
+  },
+  {
+    "category": "Flights",
+    "name": "Bellflower License ",
+    "id": 76946,
+    "level": "flight"
+  },
+  {
+    "category": "Flights",
+    "name": "Bell V2 SMB: July 2017",
+    "id": 40902,
+    "level": "flight"
+  },
+  {
+    "category": "Media Buys",
+    "name": "Bel Aire Mayfair (Click)",
+    "id": 64693,
+    "level": "mb"
+  },
+  {
+    "category": "Media Buys",
+    "name": "Bel Aire Mayfair",
+    "id": 64691,
+    "level": "mb"
+  },
+  {
+    "category": "Media Buys",
+    "name": "Beltline Neighbourhood (Click)",
+    "id": 66555,
+    "level": "mb"
+  },
+  {
+    "category": "Media Buys",
+    "name": "Beltline Neighbourhood (View)",
+    "id": 66553,
+    "level": "mb"
+  },
+  {
+    "category": "Media Buys",
+    "name": "Beltline Neighbourhood",
+    "id": 66540,
+    "level": "mb"
+  },
+  {
+    "category": "Media Buys",
+    "name": "Belmont (View)",
+    "id": 65886,
+    "level": "mb"
+  },
+  {
+    "category": "Media Buys",
+    "name": "Belmont",
+    "id": 65884,
+    "level": "mb"
+  },
+  {
+    "category": "Media Buys",
+    "name": "Bell's Corner (Click)",
+    "id": 65392,
+    "level": "mb"
+  },
+  {
+    "category": "Media Buys",
+    "name": "BELL0458_T02-E_GREENFIELD_Mobile_ON_EN_Added Value",
+    "id": 64396,
+    "level": "mb"
+  },
+  {
+    "category": "Media Buys",
+    "name": "BELL0474 _FR_Rest of Canada_T02_RT",
+    "id": 64005,
+    "level": "mb"
+  },
+  {
+    "category": "Media Buys",
+    "name": "BELL0474 _FR_Quebec_T02_RT",
+    "id": 64003,
+    "level": "mb"
+  },
+  {
+    "category": "Media Buys",
+    "name": "BELL0474 _EN_Rest of Canada_T01_RT",
+    "id": 64001,
+    "level": "mb"
+  },
+  {
+    "category": "Media Buys",
+    "name": "BELL0474 _EN_North_T01_RT",
+    "id": 63999,
+    "level": "mb"
+  },
+  {
+    "category": "Media Buys",
+    "name": "BELL0474 _EN_Quebec_T01_RT",
+    "id": 63997,
+    "level": "mb"
+  },
+  {
+    "category": "Media Buys",
+    "name": "BELL0474 _FR_Quebec_T02_WL",
+    "id": 63932,
+    "level": "mb"
+  },
+  {
+    "category": "Media Buys",
+    "name": "BELL0474 _FR_Rest of Canada_T02_WL",
+    "id": 63930,
+    "level": "mb"
+  },
+  {
+    "category": "Media Buys",
+    "name": "BELL0474 _EN_North_T01_WL",
+    "id": 63928,
+    "level": "mb"
+  },
+  {
+    "category": "Media Buys",
+    "name": "BELL0474 _EN_Quebec_T01_WL",
+    "id": 63926,
+    "level": "mb"
+  },
+  {
+    "category": "Media Buys",
+    "name": "BELL0474 _EN_Rest of Canada_T01_WL",
+    "id": 63924,
+    "level": "mb"
+  },
+  {
+    "category": "Media Buys",
+    "name": "BELL0474 _FR_Rest of Canada_T02_Hylomo",
+    "id": 63879,
+    "level": "mb"
+  },
+  {
+    "category": "Media Buys",
+    "name": "BELL0474 _FR_Quebec_T02_Hylomo",
+    "id": 63877,
+    "level": "mb"
+  },
+  {
+    "category": "Media Buys",
+    "name": "BELL0474 _EN_Rest of Canada_T01_Hylomo",
+    "id": 63872,
+    "level": "mb"
+  },
+  {
+    "category": "Media Buys",
+    "name": "BELL0474 _EN_Quebec_T01_Hylomo",
+    "id": 63870,
+    "level": "mb"
+  },
+  {
+    "category": "Media Buys",
+    "name": "BELL0474 _EN_North_T01_Hylomo",
+    "id": 63868,
+    "level": "mb"
+  },
+  {
+    "category": "Media Buys",
+    "name": "Beltline Work Nicer (View)",
+    "id": 63685,
+    "level": "mb"
+  },
+  {
+    "category": "Media Buys",
+    "name": "Beltline Work Nicer",
+    "id": 63683,
+    "level": "mb"
+  },
+  {
+    "category": "Media Buys",
+    "name": "Bell's Corner",
+    "id": 63446,
+    "level": "mb"
+  },
+  {
+    "category": "Media Buys",
+    "name": "BELL0458_T01-E_GREENFIELD_RT_Mobile_ON_EN",
+    "id": 63047,
+    "level": "mb"
+  },
+  {
+    "category": "Media Buys",
+    "name": "BELL0458_T01-E_GREENFIELD_Mobile_ON_EN",
+    "id": 62970,
+    "level": "mb"
+  },
+  {
+    "category": "Media Buys",
+    "name": "BELL0445_T01_Standard_CT_ON_EN_GTA",
+    "id": 60826,
+    "level": "mb"
+  },
+  {
+    "category": "Media Buys",
+    "name": "BELL0445_T02_Interstitia_RT - CLICKS_ON_EN_GTA",
+    "id": 60602,
+    "level": "mb"
+  },
+  {
+    "category": "Media Buys",
+    "name": "BELL0445_T01_Standard_RT - CLICKS_ON_EN_GTA",
+    "id": 60600,
+    "level": "mb"
+  },
+  {
+    "category": "Media Buys",
+    "name": "BELL0445_T01_Standard_RT_ON_EN_GTA",
+    "id": 60598,
+    "level": "mb"
+  },
+  {
+    "category": "Media Buys",
+    "name": "BELL0445_T02_Interstitia_RT_ON_EN_GTA",
+    "id": 60576,
+    "level": "mb"
+  },
+  {
+    "category": "Media Buys",
+    "name": "BELL0445_T02_Interstitial_ON_EN_GTA ",
+    "id": 59724,
+    "level": "mb"
+  },
+  {
+    "category": "Media Buys",
+    "name": "BELL0445_T01_Standard_ON_EN_GTA",
+    "id": 59721,
+    "level": "mb"
+  },
+  {
+    "category": "Media Buys",
+    "name": "Bell V2 SMB: July 2017 Fr Response",
+    "id": 48384,
+    "level": "mb"
+  },
+  {
+    "category": "Media Buys",
+    "name": "Bell V2 SMB: July 2017 Eng Response",
+    "id": 48382,
+    "level": "mb"
+  },
+  {
+    "category": "Media Buys",
+    "name": "Bell V2 SMB: July 2017 FRENCH",
+    "id": 48380,
+    "level": "mb"
+  },
+  {
+    "category": "Media Buys",
+    "name": "Bell V2 SMB: July 2017 ENGLISH",
+    "id": 48378,
+    "level": "mb"
+  },
+  {
+    "category": "Media Buys",
+    "name": "Bell V2 SMB: July 2017 Fr Response",
+    "id": 40910,
+    "level": "mb"
+  },
+  {
+    "category": "Media Buys",
+    "name": "Bell V2 SMB: July 2017 Eng Response",
+    "id": 40908,
+    "level": "mb"
+  },
+  {
+    "category": "Media Buys",
+    "name": "Bell V2 SMB: July 2017 FRENCH",
+    "id": 40906,
+    "level": "mb"
+  },
+  {
+    "category": "Media Buys",
+    "name": "Bell V2 SMB: July 2017 ENGLISH",
+    "id": 40904,
+    "level": "mb"
+  }
 ]
 
+export default function OmniSearch() {
+  const [input, setInput] = useState('')
+  const [value, setValue] = useState(null)
+  const [isOpen, setisOpen] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [result, setResult] = useState([])
+  const [message, setMessage] = useState('Loading ...')
+  const history = useHistory()
 
-export default function Grouped() {
-  const options = top100Films.map((option) => {
-    const firstLetter = option.title[0].toUpperCase()
-    return {
-      firstLetter: /[0-9]/.test(firstLetter) ? '0-9' : firstLetter,
-      ...option,
-    }
+  const [r, setR] = useState([])
+
+  const specs = {
+    hitsPerPage: 50,
+    getRankingInfo: true,
+    restrictSearchableAttributes: ['name', 'id'],
+    exactOnSingleWordQuery: 'word',
+  }
+
+  const { debouncedSearch, results } = useAlgolia({
+    searchAPIkey: process.env.REACT_APP_ALGOLIA_SEARCH_KEY,
+    specs
   })
+
+  useEffect(() => {
+    if (results.length) {
+      // if (r.length) {
+      let catogorizedResults = []
+      Object.keys(searchIndexLevelMap).forEach((category) => {
+        // let typeResults = r.filter(
+        let typeResults = results.filter(
+          (result) => result.level === searchIndexLevelMap[category]
+          // (result) => result.level === searchIndexLevelMap[category]
+        )
+        typeResults = typeResults.map((c) => ({
+          category: category,
+          name: c.name,
+          id: c.id,
+          level: c.level,
+        }))
+        if (typeResults.length !== 0) {
+          catogorizedResults = [...catogorizedResults, ...typeResults]
+        }
+      })
+      setResult(catogorizedResults)
+      setLoading(false)
+      // console.log(catogorizedResults)
+    } else {
+      setLoading(false)
+    }
+    
+    // }, [r])
+  }, [results])
+
+  const select = (e, selection) => {
+    setisOpen(false)
+    setResult([])
+    setR([])
+    const newRoute = `/${searchIndexLevelToRouteMap[selection.level]}/${selection.id}`
+    history.push(newRoute)
+  }
+
+  const handleSearchChange = (e, newValue) => {
+    setLoading(true)
+    setInput(newValue)
+    setisOpen(true)
+    // setR(res)
+    debouncedSearch(input)
+  }
 
   return (
     <Autocomplete
-      id='grouped-demo'
-      options={options.sort((a, b) => -b.firstLetter.localeCompare(a.firstLetter))}
-      groupBy={(option) => option.firstLetter}
-      getOptionLabel={(option) => option.title}
-      style={{ width: 300 }}
+      style={{
+        '*:focus': { outline: 'none' }, // not doing anything
+        width: '30rem',
+      }}
+      id='overlord-grouped-search'
+      loading={loading}
+      loadingText={message}
+      disableClearable
+      freeSolo
+      blurOnSelect
+      noOptionsText='No results found'
+      open={isOpen}
+      options={result}
+      groupBy={(option) => option.category}
+      inputValue={input}
+      onInputChange={handleSearchChange}
+      value={value}
+      onChange={select}
+      renderOption={(option, state) => {
+        // console.log(state)
+        return (
+          <>
+            <div style={{ width: 80 }}>{option.id}</div>
+            <Divider orientation='vertical' flexItem />
+            <div style={{ paddingRight: 20 }}>{option.name}</div>
+          </>
+        )
+      }}
+      getOptionLabel={(option) => `${option.id} - ${option.name}`}
+      popupIcon={
+        loading
+          ? <CircularProgress color="inherit" size={20} />
+          : <SearchIcon />
+      }
+      forcePopupIcon
+      onBlur={() => {
+        setisOpen(false)
+        // setR([])
+      }}
       renderInput={(params) => {
-        console.log(params)
+        // console.log(params)
         return (
           <TextField
+
             {...params}
-            label='Search'
+            placeholder='Search...'
             variant='outlined'
+            InputLabelProps={{ shrink: false }}
             size='small'
             style={{
-              // backgroundColor: 'white',
-              borderRadius: '0.285714rem',
+              '*:focus': { outline: 'none' }, // not doing anything
+              backgroundColor: 'white',
+              borderRadius: '0.285714rem'
             }}
           />
         )
@@ -142,3 +445,4 @@ export default function Grouped() {
     />
   )
 }
+
