@@ -5,6 +5,7 @@ import TextField from '@material-ui/core/TextField'
 import Autocomplete from '@material-ui/lab/Autocomplete'
 import SearchIcon from '@material-ui/icons/Search'
 import Paper from '@material-ui/core/Paper'
+import InputBase from '@material-ui/core/InputBase'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import Divider from '@material-ui/core/Divider'
 
@@ -320,7 +321,6 @@ export default function OmniSearch() {
   const [isOpen, setisOpen] = useState(false)
   const [loading, setLoading] = useState(false)
   const [result, setResult] = useState([])
-  const [message, setMessage] = useState('Loading ...')
   const history = useHistory()
 
   const [r, setR] = useState([])
@@ -338,14 +338,13 @@ export default function OmniSearch() {
   })
 
   useEffect(() => {
-    if (results.length) {
-      // if (r.length) {
+    // if (results.length) {
+    if (r.length) {
       let catogorizedResults = []
       Object.keys(searchIndexLevelMap).forEach((category) => {
-        // let typeResults = r.filter(
-        let typeResults = results.filter(
+        let typeResults = r.filter(
+          // let typeResults = results.filter(
           (result) => result.level === searchIndexLevelMap[category]
-          // (result) => result.level === searchIndexLevelMap[category]
         )
         typeResults = typeResults.map((c) => ({
           category: category,
@@ -363,9 +362,9 @@ export default function OmniSearch() {
     } else {
       setLoading(false)
     }
-    
-    // }, [r])
-  }, [results])
+
+  }, [r])
+  // }, [results])
 
   const select = (e, selection) => {
     setisOpen(false)
@@ -379,8 +378,8 @@ export default function OmniSearch() {
     setLoading(true)
     setInput(newValue)
     setisOpen(true)
-    // setR(res)
-    debouncedSearch(input)
+    setR(res)
+    // debouncedSearch(input)
   }
 
   return (
@@ -391,7 +390,6 @@ export default function OmniSearch() {
       }}
       id='overlord-grouped-search'
       loading={loading}
-      loadingText={message}
       disableClearable
       freeSolo
       blurOnSelect
@@ -414,32 +412,57 @@ export default function OmniSearch() {
         )
       }}
       getOptionLabel={(option) => `${option.id} - ${option.name}`}
-      popupIcon={
-        loading
-          ? <CircularProgress color="inherit" size={20} />
-          : <SearchIcon />
-      }
-      forcePopupIcon
+      // popupIcon=
+      // {
+      //   loading
+      //     ? <CircularProgress color="inherit" size={20} />
+      //     : <SearchIcon />
+      // }
+      // forcePopupIcon
       onBlur={() => {
         setisOpen(false)
+        setLoading(false)
         // setR([])
       }}
       renderInput={(params) => {
         // console.log(params)
         return (
-          <TextField
+        // <TextField
 
-            {...params}
-            placeholder='Search...'
-            variant='outlined'
-            InputLabelProps={{ shrink: false }}
-            size='small'
-            style={{
-              '*:focus': { outline: 'none' }, // not doing anything
-              backgroundColor: 'white',
-              borderRadius: '0.285714rem'
-            }}
-          />
+          //   {...params}
+          //   placeholder='Search...'
+          //   variant='outlined'
+          //   InputLabelProps={{ shrink: false }}
+          //   size='small'
+          //   style={{
+          //     '*:focus': { outline: 'none' }, // not doing anything
+          //     backgroundColor: 'white',
+          //     borderRadius: '0.285714rem'
+          //   }}
+          //   InputProps={{
+          //     ...params.InputProps,
+          //     fullWidth: true,
+          //     // to avoid rotating icon, pass to input
+          //     endAdornment: (
+          //       loading ? <CircularProgress color="secondary" size={20} /> : <SearchIcon />
+          //     ),
+          //   }}
+          // />
+          <div ref={params.InputProps.ref}>
+            < InputBase
+              type="text"
+              {...params.inputProps}
+              style={{
+                backgroundColor: 'white',
+                borderRadius: '0.285714rem',
+                padding: '6px 15px '
+              }}
+              placeholder='Search...'
+              fullWidth
+              endAdornment={
+                loading ? <CircularProgress color="secondary" size={20} /> : <SearchIcon />}
+            />
+          </div>
         )
       }}
     />
