@@ -1,319 +1,17 @@
 import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 
-import TextField from '@material-ui/core/TextField'
-import Autocomplete from '@material-ui/lab/Autocomplete'
+import Autocomplete, { createFilterOptions } from '@material-ui/lab/Autocomplete'
 import SearchIcon from '@material-ui/icons/Search'
 import Paper from '@material-ui/core/Paper'
 import InputBase from '@material-ui/core/InputBase'
 import CircularProgress from '@material-ui/core/CircularProgress'
-import Divider from '@material-ui/core/Divider'
 
 import useAlgolia from './algolia-hook'
 import { searchIndexLevelMap, searchIndexLevelToRouteMap } from './constants/campaing-level'
 
-const res = [
-  {
-    "category": "Campaigns",
-    "name": "Bell Walkthrough Test",
-    "id": 68916,
-    "level": "offer"
-  },
-  {
-    "category": "Campaigns",
-    "name": "Bell's Corner",
-    "id": 63443,
-    "level": "offer"
-  },
-  {
-    "category": "Campaigns",
-    "name": "Bell - Wholesale",
-    "id": 57581,
-    "level": "offer"
-  },
-  {
-    "category": "Campaigns",
-    "name": "Bell Virgin Internet Campaign TEST",
-    "id": 48375,
-    "level": "offer"
-  },
-  {
-    "category": "Flights",
-    "name": "Bellflower License ",
-    "id": 76946,
-    "level": "flight"
-  },
-  {
-    "category": "Flights",
-    "name": "Bell V2 SMB: July 2017",
-    "id": 40902,
-    "level": "flight"
-  },
-  {
-    "category": "Media Buys",
-    "name": "Bel Aire Mayfair (Click)",
-    "id": 64693,
-    "level": "mb"
-  },
-  {
-    "category": "Media Buys",
-    "name": "Bel Aire Mayfair",
-    "id": 64691,
-    "level": "mb"
-  },
-  {
-    "category": "Media Buys",
-    "name": "Beltline Neighbourhood (Click)",
-    "id": 66555,
-    "level": "mb"
-  },
-  {
-    "category": "Media Buys",
-    "name": "Beltline Neighbourhood (View)",
-    "id": 66553,
-    "level": "mb"
-  },
-  {
-    "category": "Media Buys",
-    "name": "Beltline Neighbourhood",
-    "id": 66540,
-    "level": "mb"
-  },
-  {
-    "category": "Media Buys",
-    "name": "Belmont (View)",
-    "id": 65886,
-    "level": "mb"
-  },
-  {
-    "category": "Media Buys",
-    "name": "Belmont",
-    "id": 65884,
-    "level": "mb"
-  },
-  {
-    "category": "Media Buys",
-    "name": "Bell's Corner (Click)",
-    "id": 65392,
-    "level": "mb"
-  },
-  {
-    "category": "Media Buys",
-    "name": "BELL0458_T02-E_GREENFIELD_Mobile_ON_EN_Added Value",
-    "id": 64396,
-    "level": "mb"
-  },
-  {
-    "category": "Media Buys",
-    "name": "BELL0474 _FR_Rest of Canada_T02_RT",
-    "id": 64005,
-    "level": "mb"
-  },
-  {
-    "category": "Media Buys",
-    "name": "BELL0474 _FR_Quebec_T02_RT",
-    "id": 64003,
-    "level": "mb"
-  },
-  {
-    "category": "Media Buys",
-    "name": "BELL0474 _EN_Rest of Canada_T01_RT",
-    "id": 64001,
-    "level": "mb"
-  },
-  {
-    "category": "Media Buys",
-    "name": "BELL0474 _EN_North_T01_RT",
-    "id": 63999,
-    "level": "mb"
-  },
-  {
-    "category": "Media Buys",
-    "name": "BELL0474 _EN_Quebec_T01_RT",
-    "id": 63997,
-    "level": "mb"
-  },
-  {
-    "category": "Media Buys",
-    "name": "BELL0474 _FR_Quebec_T02_WL",
-    "id": 63932,
-    "level": "mb"
-  },
-  {
-    "category": "Media Buys",
-    "name": "BELL0474 _FR_Rest of Canada_T02_WL",
-    "id": 63930,
-    "level": "mb"
-  },
-  {
-    "category": "Media Buys",
-    "name": "BELL0474 _EN_North_T01_WL",
-    "id": 63928,
-    "level": "mb"
-  },
-  {
-    "category": "Media Buys",
-    "name": "BELL0474 _EN_Quebec_T01_WL",
-    "id": 63926,
-    "level": "mb"
-  },
-  {
-    "category": "Media Buys",
-    "name": "BELL0474 _EN_Rest of Canada_T01_WL",
-    "id": 63924,
-    "level": "mb"
-  },
-  {
-    "category": "Media Buys",
-    "name": "BELL0474 _FR_Rest of Canada_T02_Hylomo",
-    "id": 63879,
-    "level": "mb"
-  },
-  {
-    "category": "Media Buys",
-    "name": "BELL0474 _FR_Quebec_T02_Hylomo",
-    "id": 63877,
-    "level": "mb"
-  },
-  {
-    "category": "Media Buys",
-    "name": "BELL0474 _EN_Rest of Canada_T01_Hylomo",
-    "id": 63872,
-    "level": "mb"
-  },
-  {
-    "category": "Media Buys",
-    "name": "BELL0474 _EN_Quebec_T01_Hylomo",
-    "id": 63870,
-    "level": "mb"
-  },
-  {
-    "category": "Media Buys",
-    "name": "BELL0474 _EN_North_T01_Hylomo",
-    "id": 63868,
-    "level": "mb"
-  },
-  {
-    "category": "Media Buys",
-    "name": "Beltline Work Nicer (View)",
-    "id": 63685,
-    "level": "mb"
-  },
-  {
-    "category": "Media Buys",
-    "name": "Beltline Work Nicer",
-    "id": 63683,
-    "level": "mb"
-  },
-  {
-    "category": "Media Buys",
-    "name": "Bell's Corner",
-    "id": 63446,
-    "level": "mb"
-  },
-  {
-    "category": "Media Buys",
-    "name": "BELL0458_T01-E_GREENFIELD_RT_Mobile_ON_EN",
-    "id": 63047,
-    "level": "mb"
-  },
-  {
-    "category": "Media Buys",
-    "name": "BELL0458_T01-E_GREENFIELD_Mobile_ON_EN",
-    "id": 62970,
-    "level": "mb"
-  },
-  {
-    "category": "Media Buys",
-    "name": "BELL0445_T01_Standard_CT_ON_EN_GTA",
-    "id": 60826,
-    "level": "mb"
-  },
-  {
-    "category": "Media Buys",
-    "name": "BELL0445_T02_Interstitia_RT - CLICKS_ON_EN_GTA",
-    "id": 60602,
-    "level": "mb"
-  },
-  {
-    "category": "Media Buys",
-    "name": "BELL0445_T01_Standard_RT - CLICKS_ON_EN_GTA",
-    "id": 60600,
-    "level": "mb"
-  },
-  {
-    "category": "Media Buys",
-    "name": "BELL0445_T01_Standard_RT_ON_EN_GTA",
-    "id": 60598,
-    "level": "mb"
-  },
-  {
-    "category": "Media Buys",
-    "name": "BELL0445_T02_Interstitia_RT_ON_EN_GTA",
-    "id": 60576,
-    "level": "mb"
-  },
-  {
-    "category": "Media Buys",
-    "name": "BELL0445_T02_Interstitial_ON_EN_GTA ",
-    "id": 59724,
-    "level": "mb"
-  },
-  {
-    "category": "Media Buys",
-    "name": "BELL0445_T01_Standard_ON_EN_GTA",
-    "id": 59721,
-    "level": "mb"
-  },
-  {
-    "category": "Media Buys",
-    "name": "Bell V2 SMB: July 2017 Fr Response",
-    "id": 48384,
-    "level": "mb"
-  },
-  {
-    "category": "Media Buys",
-    "name": "Bell V2 SMB: July 2017 Eng Response",
-    "id": 48382,
-    "level": "mb"
-  },
-  {
-    "category": "Media Buys",
-    "name": "Bell V2 SMB: July 2017 FRENCH",
-    "id": 48380,
-    "level": "mb"
-  },
-  {
-    "category": "Media Buys",
-    "name": "Bell V2 SMB: July 2017 ENGLISH",
-    "id": 48378,
-    "level": "mb"
-  },
-  {
-    "category": "Media Buys",
-    "name": "Bell V2 SMB: July 2017 Fr Response",
-    "id": 40910,
-    "level": "mb"
-  },
-  {
-    "category": "Media Buys",
-    "name": "Bell V2 SMB: July 2017 Eng Response",
-    "id": 40908,
-    "level": "mb"
-  },
-  {
-    "category": "Media Buys",
-    "name": "Bell V2 SMB: July 2017 FRENCH",
-    "id": 40906,
-    "level": "mb"
-  },
-  {
-    "category": "Media Buys",
-    "name": "Bell V2 SMB: July 2017 ENGLISH",
-    "id": 40904,
-    "level": "mb"
-  }
-]
+import { kevin, bell } from './constants/search-examples'
+
 
 export default function OmniSearch() {
   const [input, setInput] = useState('')
@@ -358,7 +56,7 @@ export default function OmniSearch() {
       })
       setResult(catogorizedResults)
       setLoading(false)
-      // console.log(catogorizedResults)
+      console.log(catogorizedResults)
     } else {
       setLoading(false)
     }
@@ -374,20 +72,18 @@ export default function OmniSearch() {
     history.push(newRoute)
   }
 
-  const handleSearchChange = (e, newValue) => {
+  const handleSearchChange = (e, newValue, reason) => {
     setLoading(true)
     setInput(newValue)
     setisOpen(true)
-    setR(res)
+    setR(bell)
+    console.log(reason)
     // debouncedSearch(input)
   }
 
   return (
     <Autocomplete
-      style={{
-        '*:focus': { outline: 'none' }, // not doing anything
-        width: '30rem',
-      }}
+      style={{ width: '30rem' }}
       id='overlord-grouped-search'
       loading={loading}
       disableClearable
@@ -395,6 +91,16 @@ export default function OmniSearch() {
       blurOnSelect
       noOptionsText='No results found'
       open={isOpen}
+      // filterOptions={(options, state) => {
+      //   console.log(options)
+      //   return createFilterOptions({
+      //     ...options
+      //   })
+      // }}
+      // getOptionSelected={(option, value) => {
+      //   console.log('getOptionselected')
+      //   return true
+      // }}
       options={result}
       groupBy={(option) => option.category}
       inputValue={input}
@@ -405,49 +111,20 @@ export default function OmniSearch() {
         // console.log(state)
         return (
           <>
-            <div style={{ width: 80 }}>{option.id}</div>
-            <Divider orientation='vertical' flexItem />
-            <div style={{ paddingRight: 20 }}>{option.name}</div>
+            <Paper variant='outlined' style={{ minWidth: '80px', padding: 5, textAlign: 'center' }}>{option.id}</Paper>
+            <div style={{ paddingLeft: 20 }}>{option.name}</div>
           </>
         )
       }}
       getOptionLabel={(option) => `${option.id} - ${option.name}`}
-      // popupIcon=
-      // {
-      //   loading
-      //     ? <CircularProgress color="inherit" size={20} />
-      //     : <SearchIcon />
-      // }
-      // forcePopupIcon
       onBlur={() => {
         setisOpen(false)
         setLoading(false)
-        // setR([])
+        setR([])
       }}
       renderInput={(params) => {
         // console.log(params)
         return (
-        // <TextField
-
-          //   {...params}
-          //   placeholder='Search...'
-          //   variant='outlined'
-          //   InputLabelProps={{ shrink: false }}
-          //   size='small'
-          //   style={{
-          //     '*:focus': { outline: 'none' }, // not doing anything
-          //     backgroundColor: 'white',
-          //     borderRadius: '0.285714rem'
-          //   }}
-          //   InputProps={{
-          //     ...params.InputProps,
-          //     fullWidth: true,
-          //     // to avoid rotating icon, pass to input
-          //     endAdornment: (
-          //       loading ? <CircularProgress color="secondary" size={20} /> : <SearchIcon />
-          //     ),
-          //   }}
-          // />
           <div ref={params.InputProps.ref}>
             < InputBase
               type="text"
