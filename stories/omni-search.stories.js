@@ -20,6 +20,7 @@ storiesOf("OmniSearch", module)
       searchAPIkey: process.env.REACT_APP_ALGOLIA_SEARCH_KEY,
       specs
     })
+
     return (
 
       <div
