@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 
-import Autocomplete, { createFilterOptions } from '@material-ui/lab/Autocomplete'
+import Autocomplete from '@material-ui/lab/Autocomplete'
 import SearchIcon from '@material-ui/icons/Search'
 import Paper from '@material-ui/core/Paper'
 import InputBase from '@material-ui/core/InputBase'
 import CircularProgress from '@material-ui/core/CircularProgress'
 
-import useAlgolia from './algolia-hook'
+// import useAlgolia from './algolia-hook'
 import { searchIndexLevelMap, searchIndexLevelToRouteMap } from './constants/campaing-level'
 
 import { kevin, bell } from './constants/search-examples'
 
 
-export default function OmniSearch() {
+export default function OmniSearch({ debouncedSearch, results }) {
   const [input, setInput] = useState('')
   const [value, setValue] = useState(null)
   const [isOpen, setisOpen] = useState(false)
@@ -23,17 +23,7 @@ export default function OmniSearch() {
 
   const [r, setR] = useState([])
 
-  const specs = {
-    hitsPerPage: 50,
-    getRankingInfo: true,
-    restrictSearchableAttributes: ['name', 'id'],
-    exactOnSingleWordQuery: 'word',
-  }
 
-  const { debouncedSearch, results } = useAlgolia({
-    searchAPIkey: process.env.REACT_APP_ALGOLIA_SEARCH_KEY,
-    specs
-  })
 
   useEffect(() => {
     // if (results.length) {
@@ -56,7 +46,7 @@ export default function OmniSearch() {
       })
       setResult(catogorizedResults)
       setLoading(false)
-      console.log(catogorizedResults)
+      // console.log(catogorizedResults)
     } else {
       setLoading(false)
     }
@@ -65,6 +55,7 @@ export default function OmniSearch() {
   // }, [results])
 
   const select = (e, selection) => {
+    setValue(selection)
     setisOpen(false)
     setResult([])
     setR([])
@@ -72,43 +63,36 @@ export default function OmniSearch() {
     history.push(newRoute)
   }
 
-  const handleSearchChange = (e, newValue, reason) => {
+  const handleSearchChange = (e, newValue) => {
     setLoading(true)
     setInput(newValue)
     setisOpen(true)
-    setR(bell)
-    console.log(reason)
+    setR(kevin)
     // debouncedSearch(input)
   }
 
   return (
     <Autocomplete
+      debug
       style={{ width: '30rem' }}
       id='overlord-grouped-search'
       loading={loading}
       disableClearable
       freeSolo
+      autoComplete
+      filterSelectedOptions
+      includeInputInList
       blurOnSelect
       noOptionsText='No results found'
       open={isOpen}
-      // filterOptions={(options, state) => {
-      //   console.log(options)
-      //   return createFilterOptions({
-      //     ...options
-      //   })
-      // }}
-      // getOptionSelected={(option, value) => {
-      //   console.log('getOptionselected')
-      //   return true
-      // }}
+      filterOptions={(x) => x}
       options={result}
       groupBy={(option) => option.category}
       inputValue={input}
       onInputChange={handleSearchChange}
       value={value}
       onChange={select}
-      renderOption={(option, state) => {
-        // console.log(state)
+      renderOption={(option) => {
         return (
           <>
             <Paper variant='outlined' style={{ minWidth: '80px', padding: 5, textAlign: 'center' }}>{option.id}</Paper>
