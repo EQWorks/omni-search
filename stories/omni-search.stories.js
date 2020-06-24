@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react"
 import PropTypes from 'prop-types'
 
 import useAlgolia from '../src/algolia-hook'
-import OmniSearch from "../src/mui-search-bar"
+import OmniSearch from "../src/mui-omni-search"
 import SearchIcon from '@material-ui/icons/Search'
 import { makeStyles } from '@material-ui/core/styles'
 

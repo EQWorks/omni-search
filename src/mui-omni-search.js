@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
+
 import Autocomplete from '@material-ui/lab/Autocomplete'
 import SearchIcon from '@material-ui/icons/Search'
 import Paper from '@material-ui/core/Paper'
@@ -8,8 +9,6 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 import { makeStyles } from '@material-ui/core/styles'
 
 import { searchIndexLevelMap } from './constants/campaing-level'
-
-import { kevin, bell } from './constants/search-examples'
 
 
 const useStyles = makeStyles(() => ({
@@ -51,17 +50,13 @@ export default function OmniSearch({
   const [loading, setLoading] = useState(false)
   const [result, setResult] = useState([])
 
-  const [r, setR] = useState([])
-
   const classes = useStyles()
 
   useEffect(() => {
-    // if (results.length) {
-    if (r.length) {
+    if (results.length) {
       let catogorizedResults = []
       Object.keys(searchIndexLevelMap).forEach((category) => {
-        let typeResults = r.filter(
-          // let typeResults = results.filter(
+        let typeResults = results.filter(
           (result) => result.level === searchIndexLevelMap[category]
         )
         typeResults = typeResults.map((c) => ({
@@ -76,35 +71,36 @@ export default function OmniSearch({
       })
       setResult(catogorizedResults)
       setLoading(false)
-      // console.log(catogorizedResults)
     } else {
       setLoading(false)
     }
 
-  }, [r])
-  // }, [results])
+  }, [results])
 
-  const handleSearchChange = (e, newValue) => {
-    setLoading(true)
-    setInput(newValue)
-    setisOpen(true)
-    setR(kevin)
-    // debouncedSearch(input)
+  const handleSearchChange = (e, newValue, reason) => {
+    
+    if(reason === 'input'){
+      setLoading(true)
+      setInput(newValue)
+      setisOpen(true)
+      debouncedSearch(newValue)
+    } else {
+      setInput('')
+    }
   }
 
   const select = (e, selection) => {
     getSelection && getSelection(selection)
-    setValue(selection)
+    setValue(selection) //not doing much with this logic
+    setLoading(false)
     setisOpen(false)
     setResult([])
-    setR([])
   }
 
   const handleOnBlur = () => {
     setisOpen(false)
     setLoading(false)
     setResult([])
-    setR([])
   }
 
   return (
@@ -113,7 +109,6 @@ export default function OmniSearch({
       id='overlord-grouped-search'
       loading={loading}
       freeSolo
-      filterSelectedOptions
       includeInputInList
       blurOnSelect
       open={isOpen}
