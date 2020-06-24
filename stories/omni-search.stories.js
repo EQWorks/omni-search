@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import useAlgolia from '../src/algolia-hook'
 import OmniSearch from "../src/mui-search-bar"
 import SearchIcon from '@material-ui/icons/Search'
+import { makeStyles } from '@material-ui/core/styles'
 
 
 const Container = ({ children }) => (
@@ -41,6 +42,10 @@ const hookSetup = () => {
   return { debouncedSearch, results }
 }
 
+const useStyle = makeStyles(() => ({
+  root: {width: '60rem'}
+}))
+
 export default {
   component: OmniSearch,
   title: 'OmniSearch',
@@ -72,6 +77,8 @@ export const withSelectedItem = () => {
 export const customProps = () => {
   const { debouncedSearch, results } = hookSetup()
 
+
+
   return (
     <OmniSearch {... {
       debouncedSearch,
@@ -81,8 +88,23 @@ export const customProps = () => {
         clearOnBlur: true,
         renderOption: (option) => (option.name)
       },
-      inputProps: { startAdornment: <SearchIcon /> }
+      inputProps: { startAdornment: <SearchIcon /> },
     }}
     />
   )
 }
+
+export const styled = () => {
+  const { debouncedSearch, results } = hookSetup()
+
+  const classes = useStyle()
+
+  
+  return (
+    <OmniSearch {... { debouncedSearch, results, autocompleteProps: { className: (classes.root)}}} />
+  )
+}
+
+withSelectedItem.story = {
+  parameters: { notes: 'retrieves the item selected to use with history/react-router' },
+};

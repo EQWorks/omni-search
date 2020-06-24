@@ -123,7 +123,6 @@ export default function OmniSearch({
       }
       onBlur={handleOnBlur}
       renderInput={(params) => {
-        // console.log(params)
         return (
           <div ref={params.InputProps.ref}>
             < InputBase
