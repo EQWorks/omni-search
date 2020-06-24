@@ -27,6 +27,17 @@ const useStyles = makeStyles(() => ({
   }
 }))
 
+
+/**
+ * OmniSearch Component - overlord SUI parity written with MUI 
+ * @function OmniSearch
+ * @property {function} debouncedSearch - the debounced search function
+ * @property {array} results - the results of the search
+ * @property {function} getSelection - a function that retrieves the details of the selected item (object to be stored in a state)
+ * @property {object} autocompleteProps - override props from <Autocomplete>
+ * @property {object} inputProps - override props from <InputBase>
+ */
+
 export default function OmniSearch({
   debouncedSearch,
   results,
