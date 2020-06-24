@@ -1,14 +1,16 @@
-import React from "react"
+import React, { useState, useEffect } from "react"
 
 import { storiesOf } from "@storybook/react"
-import StoryRouter from 'storybook-react-router'
 
 import useAlgolia from '../src/algolia-hook'
 import OmniSearch from "../src/mui-search-bar"
 
+
 storiesOf("OmniSearch", module)
-  .addDecorator(StoryRouter())
+  // .addDecorator(StoryRouter())
   .add("Default", () => {
+    const [selection, setSelection] = useState({})
+    
     const specs = {
       hitsPerPage: 50,
       getRankingInfo: true,
@@ -20,6 +22,12 @@ storiesOf("OmniSearch", module)
       searchAPIkey: process.env.REACT_APP_ALGOLIA_SEARCH_KEY,
       specs
     })
+
+    useEffect(() => {
+      
+      console.log('item selected', selection)
+       
+    }, [selection]);
 
     return (
 
@@ -33,7 +41,7 @@ storiesOf("OmniSearch", module)
 
         }}
       >
-        <OmniSearch {... { debouncedSearch, results }} />
+        <OmniSearch {... { debouncedSearch, results, getSelection: setSelection }} />
       </div>
     )
   }

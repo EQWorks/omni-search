@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
-// import { useHistory } from 'react-router-dom'
-
 import Autocomplete from '@material-ui/lab/Autocomplete'
 import SearchIcon from '@material-ui/icons/Search'
 import Paper from '@material-ui/core/Paper'
@@ -9,12 +7,12 @@ import InputBase from '@material-ui/core/InputBase'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import { makeStyles } from '@material-ui/core/styles'
 
-import { searchIndexLevelMap, searchIndexLevelToRouteMap } from './constants/campaing-level'
+import { searchIndexLevelMap } from './constants/campaing-level'
 
 import { kevin, bell } from './constants/search-examples'
 
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   container: { width: '30rem' },
   paper: {
     minWidth: '80px',
@@ -35,7 +33,6 @@ export default function OmniSearch({ debouncedSearch, results, getSelection }) {
   const [isOpen, setisOpen] = useState(false)
   const [loading, setLoading] = useState(false)
   const [result, setResult] = useState([])
-  // const history = useHistory()
 
   const [r, setR] = useState([])
 
@@ -84,8 +81,6 @@ export default function OmniSearch({ debouncedSearch, results, getSelection }) {
     setisOpen(false)
     setResult([])
     setR([])
-    // const newRoute = `/${searchIndexLevelToRouteMap[selection.level]}/${selection.id}`
-    // history.push(newRoute)
   }
 
   const handleOnBlur = () => {
