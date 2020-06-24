@@ -27,7 +27,13 @@ const useStyles = makeStyles(() => ({
   }
 }))
 
-export default function OmniSearch({ debouncedSearch, results, getSelection }) {
+export default function OmniSearch({
+  debouncedSearch,
+  results,
+  getSelection,
+  autocompleteProps,
+  inputProps
+}) {
   const [input, setInput] = useState('')
   const [value, setValue] = useState(null)
   const [isOpen, setisOpen] = useState(false)
@@ -92,17 +98,13 @@ export default function OmniSearch({ debouncedSearch, results, getSelection }) {
 
   return (
     <Autocomplete
-      debug
       className={classes.container}
       id='overlord-grouped-search'
       loading={loading}
-      disableClearable
       freeSolo
-      autoComplete
       filterSelectedOptions
       includeInputInList
       blurOnSelect
-      noOptionsText='No results found'
       open={isOpen}
       filterOptions={(x) => x}
       options={result}
@@ -132,17 +134,21 @@ export default function OmniSearch({ debouncedSearch, results, getSelection }) {
               fullWidth
               endAdornment={
                 loading ? <CircularProgress color="secondary" size={20} /> : <SearchIcon />}
+              {...inputProps}
             />
           </div>
         )
       }}
+      {...autocompleteProps}
     />
   )
 }
 
 OmniSearch.propTypes = {
   debouncedSearch: PropTypes.func.isRequired,
+  results: PropTypes.array.isRequired,
   getSelection: PropTypes.func,
-  results: PropTypes.array.isRequired
+  autocompleteProps: PropTypes.object,
+  inputProps: PropTypes.object
 }
 

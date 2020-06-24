@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 
 import useAlgolia from '../src/algolia-hook'
 import OmniSearch from "../src/mui-search-bar"
+import SearchIcon from '@material-ui/icons/Search'
 
 
 const Container = ({ children }) => (
@@ -53,6 +54,7 @@ export const standard = () => {
     <OmniSearch {... { debouncedSearch, results }} />
   )
 }
+
 export const withSelectedItem = () => {
   const [selection, setSelection] = useState({})
 
@@ -64,5 +66,23 @@ export const withSelectedItem = () => {
 
   return (
     <OmniSearch {... { debouncedSearch, results, getSelection: setSelection }} />
+  )
+}
+
+export const customProps = () => {
+  const { debouncedSearch, results } = hookSetup()
+
+  return (
+    <OmniSearch {... {
+      debouncedSearch,
+      results,
+      autocompleteProps: {
+        autoHighlight: true,
+        clearOnBlur: true,
+        renderOption: (option) => (option.name)
+      },
+      inputProps: { startAdornment: <SearchIcon /> }
+    }}
+    />
   )
 }
