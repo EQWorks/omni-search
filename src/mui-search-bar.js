@@ -76,8 +76,8 @@ export default function OmniSearch({ debouncedSearch, results, getSelection }) {
   }
 
   const select = (e, selection) => {
+    getSelection && getSelection(selection)
     setValue(selection)
-    getSelection(selection)
     setisOpen(false)
     setResult([])
     setR([])

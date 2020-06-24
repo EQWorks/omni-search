@@ -1,48 +1,68 @@
 import React, { useState, useEffect } from "react"
-
-import { storiesOf } from "@storybook/react"
+import PropTypes from 'prop-types'
 
 import useAlgolia from '../src/algolia-hook'
 import OmniSearch from "../src/mui-search-bar"
 
 
-storiesOf("OmniSearch", module)
-  // .addDecorator(StoryRouter())
-  .add("Default", () => {
-    const [selection, setSelection] = useState({})
-    
-    const specs = {
-      hitsPerPage: 50,
-      getRankingInfo: true,
-      restrictSearchableAttributes: ['name', 'id'],
-      exactOnSingleWordQuery: 'word',
-    }
+const Container = ({ children }) => (
+  <div
+    style={{
+      height: 300,
+      backgroundColor: 'black',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center'
 
-    const { debouncedSearch, results } = useAlgolia({
-      searchAPIkey: process.env.REACT_APP_ALGOLIA_SEARCH_KEY,
-      specs
-    })
+    }}
+  >
+    {children}
+  </div>
+)
 
-    useEffect(() => {
-      
-      console.log('item selected', selection)
-       
-    }, [selection]);
+Container.propTypes = { children: PropTypes.object }
+Container.defaultProps = { children: null }
 
-    return (
 
-      <div
-        style={{
-          height: 300,
-          backgroundColor: 'black',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center'
-
-        }}
-      >
-        <OmniSearch {... { debouncedSearch, results, getSelection: setSelection }} />
-      </div>
-    )
+const hookSetup = () => {
+  const specs = {
+    hitsPerPage: 50,
+    getRankingInfo: true,
+    restrictSearchableAttributes: ['name', 'id'],
+    exactOnSingleWordQuery: 'word',
   }
+
+  const { debouncedSearch, results } = useAlgolia({
+    searchAPIkey: process.env.REACT_APP_ALGOLIA_SEARCH_KEY,
+    specs
+  })
+
+  return { debouncedSearch, results }
+}
+
+export default {
+  component: OmniSearch,
+  title: 'OmniSearch',
+  decorators: [storyFn => <Container>{storyFn()}</Container>]
+}
+
+export const standard = () => {
+  const { debouncedSearch, results } = hookSetup()
+
+  return (
+    <OmniSearch {... { debouncedSearch, results }} />
   )
+}
+export const withSelectedItem = () => {
+  const [selection, setSelection] = useState({})
+
+  const { debouncedSearch, results } = hookSetup()
+
+  useEffect(() => {
+    console.log('item selected', selection)
+  }, [selection]);
+
+  return (
+    <OmniSearch {... { debouncedSearch, results, getSelection: setSelection }} />
+  )
+}
