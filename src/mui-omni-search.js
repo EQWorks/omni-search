@@ -11,18 +11,18 @@ import { makeStyles } from '@material-ui/core/styles'
 import { searchIndexLevelMap } from './constants/campaing-level'
 
 
-const useStyles = makeStyles(() => ({
-  container: { margin: '5px' },
+const useStyles = makeStyles((theme) => ({
+  container: { margin: theme.spacing(1) },
   paper: {
     minWidth: '80px',
-    padding: 5,
+    padding: theme.spacing(0.5),
     textAlign: 'center'
   },
   content: { paddingLeft: 20 },
   input: {
     backgroundColor: 'white',
     borderRadius: '0.285714rem',
-    padding: '6px 15px',
+    padding:  theme.spacing(0.75, 2),
     width: '30rem'
   }
 }))
@@ -71,10 +71,8 @@ export default function OmniSearch({
         }
       })
       setResult(catogorizedResults)
-      setLoading(false)
-    } else {
-      setLoading(false)
     }
+    setLoading(false)
 
   }, [results])
 
@@ -156,6 +154,11 @@ OmniSearch.propTypes = {
   results: PropTypes.array.isRequired,
   getSelection: PropTypes.func,
   autocompleteProps: PropTypes.object,
-  inputProps: PropTypes.object
+  inputProps: PropTypes.object,
 }
 
+OmniSearch.defaultProps = {
+  getSelection: (value) => value,
+  autocompleteProps: {},
+  inputProps: {},
+}

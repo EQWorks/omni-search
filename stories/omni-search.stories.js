@@ -77,8 +77,6 @@ export const withSelectedItem = () => {
 export const customProps = () => {
   const { debouncedSearch, results } = hookSetup()
 
-
-
   return (
     <OmniSearch {... {
       debouncedSearch,
