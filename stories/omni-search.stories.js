@@ -13,7 +13,7 @@ const Container = ({ children }) => (
       height: 300,
       backgroundColor: 'black',
       display: 'flex',
-      alignItems: 'center',
+      // alignItems: 'center',
       justifyContent: 'center'
 
     }}

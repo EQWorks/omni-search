@@ -12,7 +12,7 @@ import { searchIndexLevelMap } from './constants/campaing-level'
 
 
 const useStyles = makeStyles(() => ({
-  container: { width: '30rem' },
+  container: { margin: '5px' },
   paper: {
     minWidth: '80px',
     padding: 5,
@@ -22,7 +22,8 @@ const useStyles = makeStyles(() => ({
   input: {
     backgroundColor: 'white',
     borderRadius: '0.285714rem',
-    padding: '6px 15px '
+    padding: '6px 15px',
+    width: '30rem'
   }
 }))
 
@@ -127,6 +128,7 @@ export default function OmniSearch({
         </>
       )
       }
+      ListboxProps={{ style: { maxHeight: '90vh', height: '100%'} }}
       onBlur={handleOnBlur}
       renderInput={(params) => {
         return (
