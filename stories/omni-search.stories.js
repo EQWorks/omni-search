@@ -42,8 +42,13 @@ const hookSetup = () => {
   return { debouncedSearch, results }
 }
 
-const useStyle = makeStyles(() => ({
-  root: {width: '60rem'}
+const useStyle = makeStyles((theme) => ({
+  root: {
+    backgroundColor: 'white',
+    borderRadius: '0.285714rem',
+    padding:  theme.spacing(0.75, 2),
+    width: '90rem'
+  }
 }))
 
 export default {
@@ -99,7 +104,7 @@ export const styled = () => {
 
   
   return (
-    <OmniSearch {... { debouncedSearch, results, autocompleteProps: { className: (classes.root)}}} />
+    <OmniSearch {... { debouncedSearch, results, inputProps: { className: classes.root}}} />
   )
 }
 
