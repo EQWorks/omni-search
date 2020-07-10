@@ -26,6 +26,7 @@ export default {
 
 export const standard = () => {
 
+  // function that receives "event" to be used 
   const onChange = ({target: {value}}) => {
     console.log(value)
   }
