@@ -4,6 +4,7 @@ import useFuse from '../src/fuse-hook'
 import FizzySearch from '../src/mui-marketplace-search'
 import Fuse from 'fuse.js'
 import { data } from '../src/constants/marketplace-api'
+import useAlgolia from '../src/algolia-hook'
 
 
 const Container = ({ children }) => (
@@ -76,6 +77,33 @@ export const withFuse = () => {
           <div style={{backgroundColor: 'white', margin: 5}}>
             <p>{result.item.meta.name}</p>
             <p>{result.item.meta.description}</p>
+          </div>
+        ))
+      }
+    </>
+  )
+
+}
+
+export const withAlgolia = () => {
+  // const [value, setValue] = useState();
+
+  const { search, results } = useAlgolia({
+    indexName: 'marketplace',
+    searchAPIkey: process.env.REACT_APP_ALGOLIA_SEARCH_KEY,
+    specs: {exactOnSingleWordQuery: 'word'}
+  })
+
+  return (
+    <>
+      <FizzySearch onChange={({ target: { value } }) => (search(value))} />
+      {/* {results.length !== 0 && */}
+        {results.map((result) => (
+          <div style={{backgroundColor: 'white', margin: 5}}>
+            {/* {console.log(result)} */}
+            <p>{result.meta.name}</p>
+            <p>{result.category}</p>
+            <p>{result.meta.description}</p>
           </div>
         ))
       }
