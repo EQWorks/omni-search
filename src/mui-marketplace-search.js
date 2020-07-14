@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => {
   }
 })
 
-const FizzySearch = ({ onChange, ...props }) => {
+const FuzzySearch = ({ onChange, ...props }) => {
   const classes = useStyles()
   return (
     <div>
@@ -52,4 +52,4 @@ const FizzySearch = ({ onChange, ...props }) => {
   )
 }
 
-export default FizzySearch
+export default FuzzySearch

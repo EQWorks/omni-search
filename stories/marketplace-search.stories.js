@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"
 
 import useFuse from '../src/fuse-hook'
-import FizzySearch from '../src/mui-marketplace-search'
+import FuzzySearch from '../src/mui-marketplace-search'
 import Fuse from 'fuse.js'
 import { data } from '../src/constants/marketplace-api'
 import useAlgolia from '../src/algolia-hook'
@@ -24,8 +24,8 @@ const Container = ({ children }) => (
 )
 
 export default {
-  component: FizzySearch,
-  title: 'FizzySearch Marketplace',
+  component: FuzzySearch,
+  title: 'FuzzySearch Marketplace',
   decorators: [storyFn => <Container>{storyFn()}</Container>]
 }
 
@@ -37,45 +37,26 @@ export const standard = () => {
   }
 
   return (
-    <FizzySearch {...{ onChange }} />
+    <FuzzySearch {...{ onChange }} />
   )
 }
 
 export const withFuse = () => {
-  const [value, setValue] = useState('')
-  // const {search, options} = useFuse(data)
+  const fuse = useFuse(data)
   const [results, setResults] = useState([])
 
-  useEffect(() => {
-    const options = {
-      shouldSort: true,
-      tokenize: true,
-      matchAllTokens: true,
-      threshold: 0.3,
-      keys: [
-        'meta.name',
-        'category',
-        'vendor_name',
-        'vendor_description',
-        'meta.description',
-      ],
-    }
-    const fuse = new Fuse(data, options)
-    setResults(fuse.search(value))
-  }, [value])
-
-
   const onChange = ({ target: { value } }) => {
-    setValue(value)
+    setResults(fuse.search(value))
   }
 
   return (
     <>
-      <FizzySearch {...{ onChange }} />
+      <FuzzySearch {...{ onChange }} />
       {results.length !== 0 &&
         results.map((result) => (
           <div style={{backgroundColor: 'white', margin: 5}}>
             <p>{result.item.meta.name}</p>
+            <p>Type: {result.item.type}</p>
             <p>{result.item.meta.description}</p>
           </div>
         ))
@@ -86,8 +67,6 @@ export const withFuse = () => {
 }
 
 export const withAlgolia = () => {
-  // const [value, setValue] = useState();
-
   const { search, results } = useAlgolia({
     indexName: 'marketplace',
     searchAPIkey: process.env.REACT_APP_ALGOLIA_SEARCH_KEY,
@@ -96,13 +75,11 @@ export const withAlgolia = () => {
 
   return (
     <>
-      <FizzySearch onChange={({ target: { value } }) => (search(value))} />
-      {/* {results.length !== 0 && */}
+      <FuzzySearch onChange={({ target: { value } }) => (search(value))} />
         {results.map((result) => (
           <div style={{backgroundColor: 'white', margin: 5}}>
-            {/* {console.log(result)} */}
             <p>{result.meta.name}</p>
-            <p>{result.category}</p>
+            <p>Type: {result.type}</p>
             <p>{result.meta.description}</p>
           </div>
         ))
