@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
   input: {
     backgroundColor: 'white',
     borderRadius: '0.285714rem',
-    padding:  theme.spacing(0.75, 2),
+    padding: theme.spacing(0.75, 2),
     width: '30rem'
   }
 }))
@@ -77,8 +77,8 @@ export default function OmniSearch({
   }, [results])
 
   const handleSearchChange = (e, newValue, reason) => {
-    
-    if(reason === 'input'){
+
+    if (reason === 'input') {
       setLoading(true)
       setInput(newValue)
       setisOpen(true)
@@ -126,7 +126,7 @@ export default function OmniSearch({
         </>
       )
       }
-      ListboxProps={{ style: { maxHeight: '90vh', height: '100%'} }}
+      ListboxProps={{ style: { maxHeight: '90vh', height: '100%' } }}
       onBlur={handleOnBlur}
       renderInput={(params) => {
         return (
