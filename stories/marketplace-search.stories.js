@@ -18,7 +18,6 @@ const Container = ({ children }) => (
       backgroundColor: 'lightBlue',
       display: 'flex',
       alignItems: 'center',
-      // justifyContent: 'center',
       flexDirection: 'column',
       padding: 10,
     }}
@@ -37,6 +36,7 @@ export const standard = () => {
 
   // function that receives "event" to be used 
   const onChange = ({ target: { value } }) => {
+    /* eslint-disable-next-line */
     console.log(value)
   }
 
@@ -102,40 +102,35 @@ export const withAlgoliaSuggestions = () => {
     process.env.REACT_APP_ALGOLIA_SEARCH_KEY,
   )
 
+  // setup for querying multiple indexes
   const queries = [{
     indexName: 'marketplace',
     query: query,
-    // params: {
-    //   hitsPerPage: 3
-    // }
+    // params: {}
   }, {
     indexName: 'marketplace_query_suggestions',
     query: query,
-    // params: {
-    //   hitsPerPage: 3,
-    //   filters: '_tags:promotion'
-    // }
+    // params: {}
   },
   ]
 
   const handleChange = ({ target: { value } }) => {
+    setQuery(value)
     if (value === '') {
       setResult([])
       setSuggestions([])
     } else {
-      setQuery(value)
       client.multipleQueries(queries).then(({ results }) => {
-        console.log(results)
+        // console.log(results)
         setResult(results[0].hits)
         setSuggestions(results[1].hits)
       })
     }
   }
 
-
   return (
     <>
-      <FuzzySearch onChange={handleChange} />
+      <FuzzySearch onChange={handleChange} value={query} />
       {suggestions.length !== 0 && (
         <div style={{
           backgroundColor: 'orange',
@@ -148,7 +143,20 @@ export const withAlgoliaSuggestions = () => {
           {suggestions.map((suggestion) => {
             return suggestion.marketplace.facets.exact_matches.category.map((category) => {
               return (
-                <div>
+                <div
+                  style={{cursor: 'pointer'}}
+                  onClick={() => {
+                    client.initIndex('marketplace').search(suggestion.query, { facetFilters: `category: ${category.value}` })
+                      .then(({ hits }) => {
+                        // console.log(hits)
+                        setResult(hits)
+                        setQuery(suggestion.query)
+                        setSuggestions([])
+                        // setValue(suggestion.query)
+                      })
+                      .catch((e) => console.error(e))
+                  }}
+                >
                   {suggestion.query} in {category.value}
                 </div>
               )
