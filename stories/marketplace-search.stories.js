@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState } from "react"
 
 import useFuse from '../src/fuse-hook'
 import FuzzySearch from '../src/mui-marketplace-search'
@@ -141,10 +141,12 @@ export const withAlgoliaSuggestions = () => {
           zIndex: 10
         }}>
           {suggestions.map((suggestion) => {
-            return suggestion.marketplace.facets.exact_matches.category.map((category) => {
+            return suggestion.marketplace.facets.exact_matches.category.map((category, i) => {
+              const innerText = `${suggestion._highlightResult.query.value} in ${category.value}`
               return (
                 <div
-                  style={{cursor: 'pointer'}}
+                  key={i}
+                  style={{ cursor: 'pointer' }}
                   onClick={() => {
                     client.initIndex('marketplace').search(suggestion.query, { facetFilters: `category: ${category.value}` })
                       .then(({ hits }) => {
@@ -152,27 +154,20 @@ export const withAlgoliaSuggestions = () => {
                         setResult(hits)
                         setQuery(suggestion.query)
                         setSuggestions([])
-                        // setValue(suggestion.query)
                       })
                       .catch((e) => console.error(e))
                   }}
+                  dangerouslySetInnerHTML={{ __html: innerText}} 
                 >
-                  {suggestion.query} in {category.value}
+                  {/* {suggestion.query} in {category.value} */}
                 </div>
               )
             })
-            // console.log(suggestion._highlightResult.query.value)
-            // return (
-            //   <div>
-            //      suggestion._highlightResult.query.value
-            //   </div>
-            // )
           })}
         </div>)}
       <Grid container >
         {result.map((result) => (
-
-          <Grid item>
+          <Grid item key={result.objectID}>
             <Card style={{ backgroundColor: 'white', margin: 5, width: 300 }}>
               <CardContent>
                 <Typography >{result.meta.name}</Typography>

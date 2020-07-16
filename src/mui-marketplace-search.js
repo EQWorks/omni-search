@@ -1,10 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 
 import SearchIcon from '@material-ui/icons/Search'
-import Paper from '@material-ui/core/Paper'
 import InputBase from '@material-ui/core/InputBase'
-import CircularProgress from '@material-ui/core/CircularProgress'
 import { makeStyles } from '@material-ui/core/styles'
 
 
@@ -51,5 +49,7 @@ const FuzzySearch = ({ onChange, ...props }) => {
     </div>
   )
 }
+
+FuzzySearch.propTypes = { onChange: PropTypes.func.isRequired }
 
 export default FuzzySearch
