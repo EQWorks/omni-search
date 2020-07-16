@@ -2,10 +2,14 @@ import React, { useState, useEffect } from "react"
 
 import useFuse from '../src/fuse-hook'
 import FuzzySearch from '../src/mui-marketplace-search'
-import Fuse from 'fuse.js'
-import { data } from '../src/constants/marketplace-api'
+import { data } from './data/marketplace-api'
+import algoliasearch from 'algoliasearch'
 import useAlgolia from '../src/algolia-hook'
 
+import Card from '@material-ui/core/Card'
+import CardContent from '@material-ui/core/CardContent'
+import Typography from '@material-ui/core/Typography'
+import Grid from '@material-ui/core/Grid'
 
 const Container = ({ children }) => (
   <div
@@ -54,7 +58,7 @@ export const withFuse = () => {
       <FuzzySearch {...{ onChange }} />
       {results.length !== 0 &&
         results.map((result) => (
-          <div style={{backgroundColor: 'white', margin: 5}}>
+          <div style={{ backgroundColor: 'white', margin: 5 }}>
             <p>{result.item.meta.name}</p>
             <p>Type: {result.item.type}</p>
             <p>{result.item.meta.description}</p>
@@ -66,24 +70,112 @@ export const withFuse = () => {
 
 }
 
-export const withAlgolia = () => {
+export const withAlgoliaHook = () => {
   const { search, results } = useAlgolia({
     indexName: 'marketplace',
     searchAPIkey: process.env.REACT_APP_ALGOLIA_SEARCH_KEY,
-    specs: {exactOnSingleWordQuery: 'word'}
+    specs: { exactOnSingleWordQuery: 'word' }
   })
 
   return (
     <>
       <FuzzySearch onChange={({ target: { value } }) => (search(value))} />
-        {results.map((result) => (
-          <div style={{backgroundColor: 'white', margin: 5}}>
-            <p>{result.meta.name}</p>
-            <p>Type: {result.type}</p>
-            <p>{result.meta.description}</p>
-          </div>
-        ))
+      {results.map((result) => (
+        <div style={{ backgroundColor: 'white', margin: 5 }}>
+          <p>{result.meta.name}</p>
+          <p>Type: {result.type}</p>
+          <p>{result.meta.description}</p>
+        </div>
+      ))
       }
+    </>
+  )
+
+}
+export const withAlgoliaSuggestions = () => {
+  const [query, setQuery] = useState('')
+  const [result, setResult] = useState([])
+  const [suggestions, setSuggestions] = useState([])
+
+  const client = algoliasearch(
+    process.env.REACT_APP_ALGOLIA_APP_ID,
+    process.env.REACT_APP_ALGOLIA_SEARCH_KEY,
+  )
+
+  const queries = [{
+    indexName: 'marketplace',
+    query: query,
+    // params: {
+    //   hitsPerPage: 3
+    // }
+  }, {
+    indexName: 'marketplace_query_suggestions',
+    query: query,
+    // params: {
+    //   hitsPerPage: 3,
+    //   filters: '_tags:promotion'
+    // }
+  },
+  ]
+
+  const handleChange = ({ target: { value } }) => {
+    if (value === '') {
+      setResult([])
+      setSuggestions([])
+    } else {
+      setQuery(value)
+      client.multipleQueries(queries).then(({ results }) => {
+        console.log(results)
+        setResult(results[0].hits)
+        setSuggestions(results[1].hits)
+      })
+    }
+  }
+
+
+  return (
+    <>
+      <FuzzySearch onChange={handleChange} />
+      {suggestions.length !== 0 && (
+        <div style={{
+          backgroundColor: 'orange',
+          position: 'absolute',
+          top: '60px',
+          width: 240,
+          height: 'auto',
+          zIndex: 10
+        }}>
+          {suggestions.map((suggestion) => {
+            return suggestion.marketplace.facets.exact_matches.category.map((category) => {
+              return (
+                <div>
+                  {suggestion.query} in {category.value}
+                </div>
+              )
+            })
+            // console.log(suggestion._highlightResult.query.value)
+            // return (
+            //   <div>
+            //      suggestion._highlightResult.query.value
+            //   </div>
+            // )
+          })}
+        </div>)}
+      <Grid container >
+        {result.map((result) => (
+
+          <Grid item>
+            <Card style={{ backgroundColor: 'white', margin: 5, width: 300 }}>
+              <CardContent>
+                <Typography >{result.meta.name}</Typography>
+                <Typography>Type: {result.type} Category: {result.category}</Typography>
+                <Typography>{result.meta.description}</Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+        ))
+        }
+      </Grid>
     </>
   )
 
