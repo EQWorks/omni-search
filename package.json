@@ -70,6 +70,7 @@
     "@material-ui/lab": "^4.0.0-alpha.56",
     "algoliasearch": "^4.1.0",
     "classnames": "^2.2.6",
+    "fuse.js": "^6.4.0",
     "prop-types": "^15.7.2",
     "use-debounce": "^3.4.2"
   },
