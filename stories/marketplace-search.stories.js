@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 
 import useFuse from '../src/fuse-hook'
-import MarketplaceSearch from '../src/mui-marketplace-search'
+import BaseSearch from '../src/base-search'
+// import MarketplaceSearch from '../src/mui-marketplace-search'
 import { data } from './data/marketplace-api'
 import algoliasearch from 'algoliasearch'
 import useAlgolia from '../src/algolia-hook'
@@ -11,7 +12,8 @@ import CardContent from '@material-ui/core/CardContent'
 import Typography from '@material-ui/core/Typography'
 import Grid from '@material-ui/core/Grid'
 
-// eslint-disable-next-line react/prop-types
+import { withQuery } from '@storybook/addon-queryparams'
+
 const Container = ({ children }) => (
   <div
     style={{
@@ -28,7 +30,7 @@ const Container = ({ children }) => (
 )
 
 export default {
-  component: MarketplaceSearch,
+  component: BaseSearch,
   title: 'Marketplace Search',
   decorators: [storyFn => <Container>{storyFn()}</Container>],
 }
@@ -42,7 +44,7 @@ export const Default = () => {
   }
 
   return (
-    <MarketplaceSearch {...{ onChange }} />
+    <BaseSearch {...{ onChange }} />
   )
 }
 
@@ -56,10 +58,10 @@ export const FuzzySearchWithFuse = () => {
 
   return (
     <>
-      <MarketplaceSearch {...{ onChange }} />
+      <BaseSearch {...{ onChange }} />
       <Grid container >
         {results.map((result) => (
-          <Grid item key={result.objectID}>
+          <Grid item key={result.item.market_id}>
             <Card style={{ backgroundColor: 'white', margin: 5, width: 300 }}>
               <CardContent>
                 <Typography >{result.item.meta.name}</Typography>
@@ -75,28 +77,32 @@ export const FuzzySearchWithFuse = () => {
   )
 }
 
-export const FuseAndEnterKey = () => {
+export const FuseAndEnterKeyAndQueryParam = () => {
   const fuse = useFuse(data)
   const [results, setResults] = useState([])
   const [searchTerm, setSearchTerm] = useState('')
-
+  const [mockParam, setMockParam] = useState('')
   const onChange = ({ target: { value } }) => {
     setSearchTerm(value)
   }
+  const urlParams = new URLSearchParams(document.location.search)
 
   const onKeyPress = (event) => {
     if (event.which === 13 || event.keyCode === 13) {
       setResults(fuse.search(searchTerm))
+      urlParams.set('query', searchTerm)
+      setMockParam(urlParams.get('query'))
     }
   }
 
   return (
     <>
-      <MarketplaceSearch {...{ onChange, onKeyPress, value: searchTerm }} />
+      <BaseSearch {...{ onChange, onKeyPress, value: searchTerm }} />
       <Typography>Press <strong>ENTER</strong> key to trigger the search</Typography>
+      <Typography color='secondary'>query string param in url: {mockParam}</Typography>
       <Grid container >
         {results.map((result) => (
-          <Grid item key={result.objectID}>
+          <Grid item key={result.item.market_id}>
             <Card style={{ backgroundColor: 'white', margin: 5, width: 300 }}>
               <CardContent>
                 <Typography >{result.item.meta.name}</Typography>
@@ -110,6 +116,10 @@ export const FuseAndEnterKey = () => {
       </Grid>
     </>
   )
+}
+
+FuseAndEnterKeyAndQueryParam.story = {
+  decorators: [withQuery],
 }
 
 export const withAlgoliaHook = () => {
@@ -121,7 +131,7 @@ export const withAlgoliaHook = () => {
 
   return (
     <>
-      <MarketplaceSearch onChange={({ target: { value } }) => (search(value))} />
+      <BaseSearch onChange={({ target: { value } }) => (search(value))} />
       <Grid container >
         {results.map((result) => (
           <Grid item key={result.objectID}>
@@ -178,7 +188,7 @@ export const withAlgoliaSuggestions = () => {
 
   return (
     <>
-      <MarketplaceSearch onChange={handleChange} value={query} />
+      <BaseSearch onChange={handleChange} value={query} />
       {suggestions.length !== 0 && (
         <div style={{
           backgroundColor: 'orange',
