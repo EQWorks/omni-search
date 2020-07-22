@@ -35,7 +35,7 @@ export default {
 
 export const standard = () => {
 
-  // function that receives "event" to be used 
+  // function that receives "event" to be used
   const onChange = ({ target: { value } }) => {
     /* eslint-disable-next-line */
     console.log(value)
@@ -46,7 +46,7 @@ export const standard = () => {
   )
 }
 
-export const withFuse = () => {
+export const fuzzySearchWithFuse = () => {
   const fuse = useFuse(data)
   const [results, setResults] = useState([])
 
@@ -68,7 +68,43 @@ export const withFuse = () => {
       }
     </>
   )
+}
 
+export const FuseAndEnterKey = () => {
+  const fuse = useFuse(data)
+  const [results, setResults] = useState([])
+  const [searchTerm, setSearchTerm] = useState('')
+
+  const onChange = ({ target: { value } }) => {
+    setSearchTerm(value)
+  }
+
+  const onKeyPress = (event) => {
+    if (event.which === 13 || event.keyCode === 13) {
+      console.log(fuse.search(searchTerm))
+      setResults(fuse.search(searchTerm))
+    }
+  }
+
+  return (
+    <>
+      <FuzzySearch {...{ onChange, onKeyPress, value: searchTerm }} />
+      <Grid container >
+        {results.map((result) => (
+          <Grid item key={result.objectID}>
+            <Card style={{ backgroundColor: 'white', margin: 5, width: 300 }}>
+              <CardContent>
+                <Typography >{result.item.meta.name}</Typography>
+                <Typography>Type: {result.item.type} Category: {result.item.category}</Typography>
+                <Typography>{result.item.meta.description}</Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+        ))
+        }
+      </Grid>
+    </>
+  )
 }
 
 export const withAlgoliaHook = () => {
@@ -158,7 +194,7 @@ export const withAlgoliaSuggestions = () => {
                       })
                       .catch((e) => console.error(e))
                   }}
-                  dangerouslySetInnerHTML={{ __html: innerText }} 
+                  dangerouslySetInnerHTML={{ __html: innerText }}
                 >
                   {/* {suggestion.query} in {category.value} */}
                 </div>
