@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 
 import useFuse from '../src/fuse-hook'
-import FuzzySearch from '../src/mui-marketplace-search'
+import MarketplaceSearch from '../src/mui-marketplace-search'
 import { data } from './data/marketplace-api'
 import algoliasearch from 'algoliasearch'
 import useAlgolia from '../src/algolia-hook'
@@ -28,12 +28,12 @@ const Container = ({ children }) => (
 )
 
 export default {
-  component: FuzzySearch,
-  title: 'FuzzySearch Marketplace',
+  component: MarketplaceSearch,
+  title: 'Marketplace Search',
   decorators: [storyFn => <Container>{storyFn()}</Container>],
 }
 
-export const standard = () => {
+export const Default = () => {
 
   // function that receives "event" to be used
   const onChange = ({ target: { value } }) => {
@@ -42,11 +42,11 @@ export const standard = () => {
   }
 
   return (
-    <FuzzySearch {...{ onChange }} />
+    <MarketplaceSearch {...{ onChange }} />
   )
 }
 
-export const fuzzySearchWithFuse = () => {
+export const FuzzySearchWithFuse = () => {
   const fuse = useFuse(data)
   const [results, setResults] = useState([])
 
@@ -56,16 +56,21 @@ export const fuzzySearchWithFuse = () => {
 
   return (
     <>
-      <FuzzySearch {...{ onChange }} />
-      {results.length !== 0 &&
-        results.map((result, i) => (
-          <div style={{ backgroundColor: 'white', margin: 5 }}  key={i}>
-            <p>{result.item.meta.name}</p>
-            <p>Type: {result.item.type}</p>
-            <p>{result.item.meta.description}</p>
-          </div>
+      <MarketplaceSearch {...{ onChange }} />
+      <Grid container >
+        {results.map((result) => (
+          <Grid item key={result.objectID}>
+            <Card style={{ backgroundColor: 'white', margin: 5, width: 300 }}>
+              <CardContent>
+                <Typography >{result.item.meta.name}</Typography>
+                <Typography>Type: {result.item.type} Category: {result.item.category}</Typography>
+                <Typography>{result.item.meta.description}</Typography>
+              </CardContent>
+            </Card>
+          </Grid>
         ))
-      }
+        }
+      </Grid>
     </>
   )
 }
@@ -81,14 +86,14 @@ export const FuseAndEnterKey = () => {
 
   const onKeyPress = (event) => {
     if (event.which === 13 || event.keyCode === 13) {
-      console.log(fuse.search(searchTerm))
       setResults(fuse.search(searchTerm))
     }
   }
 
   return (
     <>
-      <FuzzySearch {...{ onChange, onKeyPress, value: searchTerm }} />
+      <MarketplaceSearch {...{ onChange, onKeyPress, value: searchTerm }} />
+      <Typography>Press <strong>ENTER</strong> key to trigger the search</Typography>
       <Grid container >
         {results.map((result) => (
           <Grid item key={result.objectID}>
@@ -116,15 +121,21 @@ export const withAlgoliaHook = () => {
 
   return (
     <>
-      <FuzzySearch onChange={({ target: { value } }) => (search(value))} />
-      {results.map((result, i) => (
-        <div style={{ backgroundColor: 'white', margin: 5 }} key={i}>
-          <p>{result.meta.name}</p>
-          <p>Type: {result.type}</p>
-          <p>{result.meta.description}</p>
-        </div>
-      ))
-      }
+      <MarketplaceSearch onChange={({ target: { value } }) => (search(value))} />
+      <Grid container >
+        {results.map((result) => (
+          <Grid item key={result.objectID}>
+            <Card style={{ backgroundColor: 'white', margin: 5, width: 300 }}>
+              <CardContent>
+                <Typography >{result.meta.name}</Typography>
+                <Typography>Type: {result.type} Category: {result.category}</Typography>
+                <Typography>{result.meta.description}</Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+        ))
+        }
+      </Grid>
     </>
   )
 
@@ -167,7 +178,7 @@ export const withAlgoliaSuggestions = () => {
 
   return (
     <>
-      <FuzzySearch onChange={handleChange} value={query} />
+      <MarketplaceSearch onChange={handleChange} value={query} />
       {suggestions.length !== 0 && (
         <div style={{
           backgroundColor: 'orange',

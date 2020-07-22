@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => {
   }
 })
 
-const FuzzySearch = ({ onChange, ...props }) => {
+const MarketplaceSearch = ({ onChange, ...props }) => {
   const classes = useStyles()
   return (
     <div>
@@ -50,6 +50,6 @@ const FuzzySearch = ({ onChange, ...props }) => {
   )
 }
 
-FuzzySearch.propTypes = { onChange: PropTypes.func.isRequired }
+MarketplaceSearch.propTypes = { onChange: PropTypes.func.isRequired }
 
-export default FuzzySearch
+export default MarketplaceSearch
