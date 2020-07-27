@@ -1,14 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 
 import SearchIcon from '@material-ui/icons/Search'
 import InputBase from '@material-ui/core/InputBase'
 import { makeStyles } from '@material-ui/core/styles'
-// import { useHistory } from 'react-router-dom'
-import { useQueryParam, StringParam } from 'use-query-params'
-// import useFuse from './fuse-hook'
-
-// ATTENTION needs to add query-param provider to index.js where <App/> is being mounted https://www.npmjs.com/package/use-query-params?activeTab=readme
 
 const useStyles = makeStyles((theme) => {
   // const theme = {
@@ -35,37 +30,52 @@ const useStyles = makeStyles((theme) => {
   }
 })
 
-const MarketplaceSearch = ({ ...props }) => {
+/**
+ * MarketplaceSearch Component - locus MUI parity
+ * @function MarketplaceSearch
+ * @property {function} setSearch - from useState
+ * @property {string} search - from useState
+ * @property {function} updateHistory - invoked inside onKeyPress
+ */
+
+const MarketplaceSearch = ({ setSearch, search, updateHistory, ...props }) => {
   const classes = useStyles()
-  // const history = useHistory()
-  const [query = '', setQuery] = useQueryParam('query', StringParam)
-  // const fuse = useFuse(data)
-  // const [results, setResults] = useState([])
+  const [term, setTerm] = useState('')
+  useEffect(() => (search ? setTerm(search) : setTerm('')), [search])
 
   const onChange = ({ target: { value } }) => {
-    setQuery(value)
-    // setResults(fuse.search(value))
+    setTerm(value)
   }
 
+  const onKeyPress = (event) => {
+    if (event.which === 13 || event.keyCode === 13) {
+      setSearch(term)
+      updateHistory(term)
+    }
+  }
 
   return (
     <div>
-      < InputBase
-        type="text"
+      <InputBase
+        type='text'
         inputProps={{ 'aria-label': 'search marketplace' }}
         className={classes.input}
         placeholder='Search'
         fullWidth
         endAdornment={<SearchIcon />}
         onChange={onChange}
-        value={query}
+        onKeyPress={onKeyPress}
+        value={term}
         {...props}
       />
-
     </div>
   )
 }
 
-MarketplaceSearch.propTypes = { onChange: PropTypes.func.isRequired }
+MarketplaceSearch.propTypes = {
+  setSearch: PropTypes.func.isRequired,
+  search: PropTypes.string.isRequired,
+  updateHistory: PropTypes.func.isRequired,
+}
 
 export default MarketplaceSearch
