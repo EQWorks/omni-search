@@ -1,38 +1,70 @@
 module.exports = {
-    parser: 'babel-eslint',
-    env: {
-      browser: true,
-      es6: true,
-      node: true,
-      jest: true
+  env: {
+    browser: true,
+    es6: true,
+    node: true,
+    jest: true,
+  },
+  settings: {
+    react: {
+      pragma: 'React',
+      version: 'detect',
+    }
+  },
+  extends: ['eslint:recommended', 'plugin:react/recommended'],
+  globals: {
+    Atomics: 'readonly',
+    SharedArrayBuffer: 'readonly',
+  },
+  parserOptions: {
+    ecmaFeatures: {
+      jsx: true,
     },
-    settings: {
-      react: {
-        pragma: 'React',
-        version: '16.13',
-      },
+    ecmaVersion: 2018,
+    sourceType: 'module',
+  },
+  plugins: ['react'],
+  rules: {
+    'comma-dangle': ['error', 'always-multiline'],
+    'eol-last': ['error', 'always'],
+    indent: ['error', 2],
+    'object-curly-spacing': ['error', 'always'],
+    quotes: ['error', 'single', { 'avoidEscape': true }],
+    semi: ['error', 'never'],
+  },
+}
+module.exports = {
+  env: {
+    browser: true,
+    es6: true,
+    node: true,
+    jest: true,
+  },
+  settings: {
+    react: {
+      pragma: 'React',
+      version: 'detect',
+    }
+  },
+  extends: ['eslint:recommended', 'plugin:react/recommended'],
+  globals: {
+    Atomics: 'readonly',
+    SharedArrayBuffer: 'readonly',
+  },
+  parserOptions: {
+    ecmaFeatures: {
+      jsx: true,
     },
-    extends: [
-      'eslint:recommended',
-      'plugin:react/recommended',
-    ],
-    globals: {
-      Atomics: 'readonly',
-      SharedArrayBuffer: 'readonly',
-    },
-    parserOptions: {
-      ecmaFeatures: {
-        jsx: true,
-      },
-      ecmaVersion: 2018,
-      sourceType: 'module',
-    },
-    plugins: [
-      'react',
-      'react-hooks',
-      'jest'
-    ],
-    rules: {
-      indent: ['error', 2],
-    },
-  }
+    ecmaVersion: 2018,
+    sourceType: 'module',
+  },
+  plugins: ['react'],
+  rules: {
+    'comma-dangle': ['error', 'always-multiline'],
+    'eol-last': ['error', 'always'],
+    indent: ['error', 2],
+    'object-curly-spacing': ['error', 'always'],
+    quotes: ['error', 'single', { 'avoidEscape': true }],
+    semi: ['error', 'never'],
+  },
+}

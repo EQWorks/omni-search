@@ -15,7 +15,7 @@
     "lint:watch:fix": "esw --fix --watch src/",
     "build": "babel src --out-dir dist --copy-files",
     "prepublishOnly": "yarn eslint src/ && yarn build",
-    "storybook": "env $(print-env) start-storybook -p 6006",
+    "start": "env $(print-env) start-storybook -p 6006",
     "build-storybook": "build-storybook"
   },
   "repository": {
@@ -47,8 +47,6 @@
     "@storybook/react": "^5.3.18",
     "@storybook/storybook-deployer": "^2.8.5",
     "@storybook/theming": "^5.3.18",
-    "@testing-library/jest-dom": "^5.7.0",
-    "axios": "^0.19.2",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^26.0.1",
     "babel-loader": "^8.0.6",
@@ -58,18 +56,14 @@
     "eslint-plugin-react-hooks": "^4.0.0",
     "eslint-watch": "^6.0.1",
     "jest": "^26.0.1",
-    "jsdoc-to-markdown": "^6.0.1",
     "react": "^16.13.1",
-    "react-dom": "^16.13.0",
-    "react-router-dom": "^5.2.0",
-    "react-test-renderer": "^16.13.1"
+    "react-dom": "^16.13.0"
   },
   "dependencies": {
     "@material-ui/core": "^4.9.11",
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.56",
     "algoliasearch": "^4.1.0",
-    "classnames": "^2.2.6",
     "fuse.js": "^6.4.0",
     "prop-types": "^15.7.2",
     "use-debounce": "^3.4.2"

@@ -16,15 +16,15 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     minWidth: '80px',
     padding: theme.spacing(0.5),
-    textAlign: 'center'
+    textAlign: 'center',
   },
   content: { paddingLeft: 20 },
   input: {
     backgroundColor: 'white',
     borderRadius: '0.285714rem',
     padding: theme.spacing(0.75, 2),
-    width: '30rem'
-  }
+    width: '30rem',
+  },
 }))
 
 
@@ -43,7 +43,7 @@ export default function OmniSearch({
   results,
   getSelection,
   autocompleteProps,
-  inputProps
+  inputProps,
 }) {
   const [input, setInput] = useState('')
   const [value, setValue] = useState(null)
@@ -58,7 +58,7 @@ export default function OmniSearch({
       let catogorizedResults = []
       Object.keys(searchIndexLevelMap).forEach((category) => {
         let typeResults = results.filter(
-          (result) => result.level === searchIndexLevelMap[category]
+          (result) => result.level === searchIndexLevelMap[category],
         )
         typeResults = typeResults.map((c) => ({
           category: category,
