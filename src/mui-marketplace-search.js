@@ -26,8 +26,8 @@ const useStyles = makeStyles((theme) => {
       padding: theme.spacing(0.75, 2),
       width: '270px',
       height: '40px',
-      border: '1px solid grey'
-    }
+      border: '1px solid grey',
+    },
   }
 })
 

@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState } from 'react'
 
 import useFuse from '../src/fuse-hook'
 import FuzzySearch from '../src/mui-marketplace-search'
@@ -11,6 +11,7 @@ import CardContent from '@material-ui/core/CardContent'
 import Typography from '@material-ui/core/Typography'
 import Grid from '@material-ui/core/Grid'
 
+// eslint-disable-next-line react/prop-types
 const Container = ({ children }) => (
   <div
     style={{
@@ -29,7 +30,7 @@ const Container = ({ children }) => (
 export default {
   component: FuzzySearch,
   title: 'FuzzySearch Marketplace',
-  decorators: [storyFn => <Container>{storyFn()}</Container>]
+  decorators: [storyFn => <Container>{storyFn()}</Container>],
 }
 
 export const standard = () => {
@@ -57,8 +58,8 @@ export const withFuse = () => {
     <>
       <FuzzySearch {...{ onChange }} />
       {results.length !== 0 &&
-        results.map((result) => (
-          <div style={{ backgroundColor: 'white', margin: 5 }}>
+        results.map((result, i) => (
+          <div style={{ backgroundColor: 'white', margin: 5 }}  key={i}>
             <p>{result.item.meta.name}</p>
             <p>Type: {result.item.type}</p>
             <p>{result.item.meta.description}</p>
@@ -74,14 +75,14 @@ export const withAlgoliaHook = () => {
   const { search, results } = useAlgolia({
     indexName: 'marketplace',
     searchAPIkey: process.env.REACT_APP_ALGOLIA_SEARCH_KEY,
-    specs: { exactOnSingleWordQuery: 'word' }
+    specs: { exactOnSingleWordQuery: 'word' },
   })
 
   return (
     <>
       <FuzzySearch onChange={({ target: { value } }) => (search(value))} />
-      {results.map((result) => (
-        <div style={{ backgroundColor: 'white', margin: 5 }}>
+      {results.map((result, i) => (
+        <div style={{ backgroundColor: 'white', margin: 5 }} key={i}>
           <p>{result.meta.name}</p>
           <p>Type: {result.type}</p>
           <p>{result.meta.description}</p>
@@ -138,7 +139,7 @@ export const withAlgoliaSuggestions = () => {
           top: '60px',
           width: 240,
           height: 'auto',
-          zIndex: 10
+          zIndex: 10,
         }}>
           {suggestions.map((suggestion) => {
             return suggestion.marketplace.facets.exact_matches.category.map((category, i) => {
@@ -157,7 +158,7 @@ export const withAlgoliaSuggestions = () => {
                       })
                       .catch((e) => console.error(e))
                   }}
-                  dangerouslySetInnerHTML={{ __html: innerText}} 
+                  dangerouslySetInnerHTML={{ __html: innerText }} 
                 >
                   {/* {suggestion.query} in {category.value} */}
                 </div>

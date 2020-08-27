@@ -21,7 +21,7 @@ const useFuse = (data) => {
       ],
     }
     setFuse(new Fuse(data, options))
-  }, [data]);
+  }, [data])
 
   return fuse
 }
