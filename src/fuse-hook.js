@@ -17,7 +17,7 @@ import Fuse from 'fuse.js'
 
 const useFuse = (data, options) => {
 
-  const [fuse, setFuse] = useState({})
+  const [fuse, setFuse] = useState(null)
 
   useEffect(() => {
     const specs = {
