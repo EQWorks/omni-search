@@ -1,6 +1,6 @@
 {
   "name": "@eqworks/omni-search",
-  "version": "0.2.3",
+  "version": "0.2.4-alpha",
   "description": "EQWorks workflow omni search component and hook",
   "main": "dist/index.js",
   "source": "src/index.js",
@@ -42,6 +42,7 @@
     "@storybook/addon-actions": "^5.3.18",
     "@storybook/addon-links": "^5.3.18",
     "@storybook/addon-notes": "^5.3.19",
+    "@storybook/addon-queryparams": "^5.3.19",
     "@storybook/addon-storysource": "^5.3.19",
     "@storybook/addons": "^5.3.18",
     "@storybook/react": "^5.3.18",

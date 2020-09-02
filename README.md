@@ -12,19 +12,23 @@ Requires peer dependencies:
 ```js
 import {
   useAlgolia,
-  OmniSearch
+  OmniSearch,
+  useFuse,
+  BaseSearch,
+  Marketplacesearch,
 } from '@eqworks/omni-search'
 ```
 
 ## Documentation
+</br>
 
-### useAlgolia( )
+### useAlgolia
 <code>useAlgolia([indexName], searchAPIkey, specs, algoliaIDkey)</code> ⇒ <code><a href="#Hook">Hook</a></code></dt>
 
 Algolia custom hook. Should be called after server API call that retrieves the search key
 
 
-**Kind**: global function  
+**Kind**: global function
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -45,11 +49,12 @@ Algolia custom hook. Should be called after server API call that retrieves the s
 | results | <code>array</code> | the results of the search |
 
 -----
-<a name="OmniSearch"></a>
+
+</br>
 
 ### OmniSearch
 ```
-< OmniSearch {...{ 
+< OmniSearch {...{
     debouncedSearch,
     results,
     getSelection,
@@ -57,12 +62,12 @@ Algolia custom hook. Should be called after server API call that retrieves the s
     inputProps
   }}
 />
-  ``` 
- 
+  ```
+
 
 OmniSearch Component - overlord SUI parity written with MUI
 
-**Kind**: global function  
+**Kind**: global function
 
 **Properties**
 
@@ -73,3 +78,68 @@ OmniSearch Component - overlord SUI parity written with MUI
 | getSelection | <code>function</code> | ```setState``` => a function that retrieves the details of the selected item (object to be stored in a state) |
 | autocompleteProps | <code>object</code> | override props from ```<Autocomplete> ```|
 | inputProps | <code>object</code> | override props from ```<InputBase> ```|
+
+-----
+</br>
+
+### useFuse(data, options) ⇒ [<code>Hook</code>](#Hook)
+```
+const fuse = useFuse(data)
+```
+
+Fuse custom hook. Should be called after server API call that retrieves data
+
+**Kind**: global function
+
+| Param | Type | Description |
+| --- | --- | --- |
+| data | <code>Array</code> | the array of objects to initiate Fuse with |
+| options | <code>object</code> | optional: Fuse specs for the search. Default to marketplace config |
+
+</br>
+
+### returns: <code>Hook {Object}</code>
+
+| Name | Type | Description |
+| --- | --- | --- |
+| fuse | <code>object</code> | the initiated fuse object to call search  on a term or any other method |
+
+-----
+</br>
+
+### MarketplaceSearch
+```
+< MarketplaceSearch {...{setSearch, search, updateHistory, ...props}} />
+```
+MarketplaceSearch Component - locus tailored, MUI parity
+
+**Kind**: global function
+
+**Properties**
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| setSearch | <code>function</code> | from useState |
+| search | <code>string</code> | from useState |
+| updateHistory | <code>function</code> | invoked inside onKeyPress |
+| ...props | <code>object</code> | any InputBase props to override default |
+
+-----
+</br>
+
+### BaseSearch
+```
+<BaseSearch {...{onChange, ...props}}/>
+```
+BaseSearch Component: versatile search input
+
+**Kind**: global function
+
+**Properties**
+
+| Param | Type | Description |
+| --- | --- | --- |
+| onChange | <code>function</code> | the call to action to manipulate the event value entered |
+| ...props | <code>object</code> | any InputBase props to override default |
+
