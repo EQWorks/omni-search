@@ -25,14 +25,21 @@ const useStyles = makeStyles((theme) => {
       padding: theme.spacing(0.75, 2),
       width: '270px',
       height: '40px',
-      border: '1px solid grey'
-    }
+      border: '1px solid grey',
+    },
   }
 })
 
+/**
+ * BaseSearch Component: versatile search input
+ * @function BaseSearch
+ * @param {function} onChange the call to action to manipulate the event value entered
+ * @param {...object} props - any InputBase props to override default
+ */
+
 const BaseSearch = ({ onChange, ...props }) => {
   const classes = useStyles()
-  
+
   return (
     <div>
       < InputBase

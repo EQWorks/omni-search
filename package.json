@@ -1,6 +1,6 @@
 {
   "name": "@eqworks/omni-search",
-  "version": "0.2.3",
+  "version": "0.2.4-alpha",
   "description": "EQWorks workflow omni search component and hook",
   "main": "dist/index.js",
   "source": "src/index.js",

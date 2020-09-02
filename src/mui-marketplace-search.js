@@ -31,11 +31,12 @@ const useStyles = makeStyles((theme) => {
 })
 
 /**
- * MarketplaceSearch Component - locus MUI parity
+ * MarketplaceSearch Component - locus tailored, MUI parity
  * @function MarketplaceSearch
- * @property {function} setSearch - from useState
- * @property {string} search - from useState
- * @property {function} updateHistory - invoked inside onKeyPress
+ * @param {function} setSearch - from useState
+ * @param {string} search - from useState
+ * @param {function(term): void} updateHistory - invoked inside onKeyPress
+ * @param {...object} props - any InputBase props to override default
  */
 
 const MarketplaceSearch = ({ setSearch, search, updateHistory, ...props }) => {
