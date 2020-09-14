@@ -2617,6 +2617,276 @@ export const data = [
     "vendor_description": "Home and Auto Data",
     "vendor_logo_tld": "optaintel.ca",
     "bundle_items": []
+  },
+  {
+    "market_id": 324,
+    "type": "bundle",
+    "type_id": null,
+    "meta": {
+      "name": "Must-have-it Millennials",
+      "description": "Quintessential Millennial habits & interests such as attending concerts, bars, music festivals, movies, and coffee shops."
+    },
+    "vendor_id": 3,
+    "price": null,
+    "segment_cpm_price": null,
+    "price_factor": 0.5,
+    "created": "2019-05-15T04:00:00.000Z",
+    "start": null,
+    "end": null,
+    "disabled": false,
+    "category": "bundle",
+    "category_id": 9,
+    "unique_user": null,
+    "vendor_name": "EQ",
+    "vendor_description": "Location Data",
+    "vendor_logo_tld": "eqworks.com",
+    "bundle_items": [
+      362
+    ]
+  },
+  {
+    "market_id": 327,
+    "type": "bundle",
+    "type_id": null,
+    "meta": {
+      "name": "Avid Travellers",
+      "description": "When you're caught frequently traveling through major airports, train stations, highway routes, and tourist attractions whether for work, business, or travel & leisure."
+    },
+    "vendor_id": 3,
+    "price": null,
+    "segment_cpm_price": null,
+    "price_factor": 0.5,
+    "created": "2019-05-15T04:00:00.000Z",
+    "start": null,
+    "end": null,
+    "disabled": false,
+    "category": "bundle",
+    "category_id": 9,
+    "unique_user": null,
+    "vendor_name": "EQ",
+    "vendor_description": "Location Data",
+    "vendor_logo_tld": "eqworks.com",
+    "bundle_items": [
+      364
+    ]
+  },
+  {
+    "market_id": 329,
+    "type": "bundle",
+    "type_id": null,
+    "meta": {
+      "name": "Household Shoppers",
+      "description": "Primary shoppers that make routine visits to grocery and big box stores to replenish everyday household items. "
+    },
+    "vendor_id": 3,
+    "price": null,
+    "segment_cpm_price": null,
+    "price_factor": 0.5,
+    "created": "2019-05-15T04:00:00.000Z",
+    "start": null,
+    "end": null,
+    "disabled": false,
+    "category": "bundle",
+    "category_id": 9,
+    "unique_user": null,
+    "vendor_name": "EQ",
+    "vendor_description": "Location Data",
+    "vendor_logo_tld": "eqworks.com",
+    "bundle_items": [
+      269,
+      169,
+      226,
+      165,
+      223,
+      171,
+      170,
+      167,
+      173,
+      172,
+      164,
+      166,
+      168,
+      225,
+      259,
+      250,
+      224
+    ]
+  },
+  {
+    "market_id": 328,
+    "type": "bundle",
+    "type_id": null,
+    "meta": {
+      "name": "Health & Fitness Fanatics",
+      "description": "Canadians who regularly workout at gyms, yoga/spin studios, and community/recreation centers; plus those that shop at nutrition stores."
+    },
+    "vendor_id": 3,
+    "price": null,
+    "segment_cpm_price": null,
+    "price_factor": 0.5,
+    "created": "2019-05-15T04:00:00.000Z",
+    "start": null,
+    "end": null,
+    "disabled": false,
+    "category": "bundle",
+    "category_id": 9,
+    "unique_user": null,
+    "vendor_name": "EQ",
+    "vendor_description": "Location Data",
+    "vendor_logo_tld": "eqworks.com",
+    "bundle_items": [
+      357,
+      360,
+      361,
+      283
+    ]
+  },
+  {
+    "market_id": 326,
+    "type": "bundle",
+    "type_id": null,
+    "meta": {
+      "name": "High Net Worth Shoppers",
+      "description": "High income audiences that shop at luxury stores and auto dealerships, dine at high-end restaurants, play at golf & country clubs, and live in high income neighborhoods."
+    },
+    "vendor_id": 3,
+    "price": null,
+    "segment_cpm_price": null,
+    "price_factor": 0.5,
+    "created": "2019-05-15T04:00:00.000Z",
+    "start": null,
+    "end": null,
+    "disabled": false,
+    "category": "bundle",
+    "category_id": 9,
+    "unique_user": null,
+    "vendor_name": "EQ",
+    "vendor_description": "Location Data",
+    "vendor_logo_tld": "eqworks.com",
+    "bundle_items": [
+      348,
+      349,
+      352,
+      353,
+      354,
+      355,
+      359,
+      365
+    ]
+  },
+  {
+    "market_id": 325,
+    "type": "bundle",
+    "type_id": null,
+    "meta": {
+      "name": "Summer Fun Seekers",
+      "description": "Make the most of summer weather by going to patio restaurants, concerts, music festivals, and outdoor attractions."
+    },
+    "vendor_id": 3,
+    "price": null,
+    "segment_cpm_price": null,
+    "price_factor": 0.5,
+    "created": "2019-05-15T04:00:00.000Z",
+    "start": null,
+    "end": null,
+    "disabled": false,
+    "category": "bundle",
+    "category_id": 9,
+    "unique_user": null,
+    "vendor_name": "EQ",
+    "vendor_description": "Location Data",
+    "vendor_logo_tld": "eqworks.com",
+    "bundle_items": []
+  },
+  {
+    "market_id": 323,
+    "type": "bundle",
+    "type_id": null,
+    "meta": {
+      "name": "Essentials Only Students",
+      "description": "Post-secondary students who require school essentials, living essentials, and other items to support social and academic life."
+    },
+    "vendor_id": 3,
+    "price": null,
+    "segment_cpm_price": null,
+    "price_factor": 0.5,
+    "created": "2019-05-15T04:00:00.000Z",
+    "start": null,
+    "end": null,
+    "disabled": false,
+    "category": "bundle",
+    "category_id": 9,
+    "unique_user": null,
+    "vendor_name": "EQ",
+    "vendor_description": "Location Data",
+    "vendor_logo_tld": "eqworks.com",
+    "bundle_items": [
+      350,
+      356,
+      363
+    ]
+  },
+  {
+    "market_id": 322,
+    "type": "bundle",
+    "type_id": null,
+    "meta": {
+      "name": "Auto Intenders",
+      "description": "Understand in-market auto buyers and car aficionados"
+    },
+    "vendor_id": 3,
+    "price": null,
+    "segment_cpm_price": null,
+    "price_factor": 0.5,
+    "created": "2019-05-15T04:00:00.000Z",
+    "start": null,
+    "end": null,
+    "disabled": false,
+    "category": "bundle",
+    "category_id": 9,
+    "unique_user": null,
+    "vendor_name": "EQ",
+    "vendor_description": "Location Data",
+    "vendor_logo_tld": "eqworks.com",
+    "bundle_items": [
+      185,
+      252,
+      155,
+      163,
+      156,
+      196,
+      239,
+      249,
+      266,
+      279,
+      238,
+      275
+    ]
+  },
+  {
+    "market_id": 321,
+    "type": "bundle",
+    "type_id": null,
+    "meta": {
+      "name": "Sports Fanatics",
+      "description": "Avid sports fans that are seen attending professional hockey, basketball, soccer, and baseball games."
+    },
+    "vendor_id": 3,
+    "price": null,
+    "segment_cpm_price": null,
+    "price_factor": 0.5,
+    "created": "2019-05-15T04:00:00.000Z",
+    "start": null,
+    "end": null,
+    "disabled": false,
+    "category": "bundle",
+    "category_id": 9,
+    "unique_user": null,
+    "vendor_name": "EQ",
+    "vendor_description": "Location Data",
+    "vendor_logo_tld": "eqworks.com",
+    "bundle_items": [
+      351
+    ]
   }
 ]
-
