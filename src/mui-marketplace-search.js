@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 
+import IconButton from '@material-ui/core/IconButton'
 import SearchIcon from '@material-ui/icons/Search'
 import InputBase from '@material-ui/core/InputBase'
 import { makeStyles } from '@material-ui/core/styles'
@@ -22,11 +23,12 @@ const useStyles = makeStyles((theme) => {
     input: {
       backgroundColor: 'white',
       borderRadius: '25px',
-      padding: theme.spacing(0.75, 2),
+      padding: theme.spacing(0.75, 0, 0.75, 2),
       width: '270px',
       height: '40px',
       border: '1px solid grey',
     },
+    iconRoot: { padding: '10px' },
   }
 })
 
@@ -48,8 +50,8 @@ const MarketplaceSearch = ({ setSearch, search, updateHistory, ...props }) => {
     setTerm(value)
   }
 
-  const onKeyPress = (event) => {
-    if (event.which === 13 || event.keyCode === 13) {
+  const submit = (event) => {
+    if (event.which === 13 || event.keyCode === 13 || event.type === 'click') {
       setSearch(term)
       updateHistory(term)
     }
@@ -63,9 +65,13 @@ const MarketplaceSearch = ({ setSearch, search, updateHistory, ...props }) => {
         className={classes.input}
         placeholder='Search'
         fullWidth
-        endAdornment={<SearchIcon />}
+        endAdornment={
+          <IconButton aria-label="search" onClick={submit} classes={{ root: classes.iconRoot }}>
+            <SearchIcon />
+          </IconButton>
+        }
         onChange={onChange}
-        onKeyPress={onKeyPress}
+        onKeyPress={submit}
         value={term}
         {...props}
       />
