@@ -25,12 +25,13 @@ const useFuse = (data, options) => {
       tokenize: true,
       matchAllTokens: true,
       threshold: 0.3,
+      ignoreLocation: true,
       keys: [
         'meta.name',
+        'meta.description',
         'category',
         'vendor_name',
         'vendor_description',
-        'meta.description',
       ],
     }
 
