@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useMemo } from 'react'
 
 import Fuse from 'fuse.js'
 
@@ -16,10 +16,7 @@ import Fuse from 'fuse.js'
  */
 
 const useFuse = (data, options) => {
-
-  const [fuse, setFuse] = useState(null)
-
-  useEffect(() => {
+  return useMemo(() => {
     const specs = {
       shouldSort: true,
       tokenize: true,
@@ -36,9 +33,7 @@ const useFuse = (data, options) => {
     }
 
     const config = options ? options : specs
-    setFuse(new Fuse(data, config))
+    return new Fuse(data, config)
   }, [data])
-
-  return fuse
 }
 export default useFuse
