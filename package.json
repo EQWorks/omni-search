@@ -10,7 +10,6 @@
     "LICENSE"
   ],
   "scripts": {
-    "test": "yarn jest --testPathPattern=__tests__/",
     "lint": "eslint src/",
     "lint:watch:fix": "esw --fix --watch src/",
     "build": "babel src --out-dir dist --copy-files",
@@ -49,14 +48,11 @@
     "@storybook/storybook-deployer": "^2.8.5",
     "@storybook/theming": "^5.3.18",
     "babel-eslint": "^10.1.0",
-    "babel-jest": "^26.0.1",
     "babel-loader": "^8.0.6",
     "eslint": "^6.3.0",
-    "eslint-plugin-jest": "^23.11.0",
     "eslint-plugin-react": "^7.14.3",
     "eslint-plugin-react-hooks": "^4.0.0",
     "eslint-watch": "^6.0.1",
-    "jest": "^26.0.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.0"
   },
